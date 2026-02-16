@@ -51,6 +51,26 @@ Source files in the repo stay clean and readable.
 **Important:** This only applies to `docs/*.md` files. Blog posts and `index.html`
 may use real Liquid syntax (e.g. `{{ post.title }}`) and are processed normally.
 
+## Pipes in Markdown Table Code
+Kramdown uses `|` as the table column separator. If you need a literal `|` inside
+a backtick code span within a table cell, the backslash escape (`\|`) does NOT work
+inside backticks — it renders as `\|` literally.
+
+**Use `<code>` with `&#124;` instead:**
+```
+| Modifier | Example |
+|----------|---------|
+| Upper | <code>{{SKU:string&#124;upper}}</code> |
+```
+
+This renders as `{{SKU:string|upper}}` in the browser. Only needed for code spans
+inside table cells that contain pipes. Regular text pipes use `\|` as normal.
+
+## Code Block Syntax Highlighting
+- Use `json` for valid JSON blocks (no comments, no trailing commas)
+- Use `javascript` for JSONC blocks (with `//` comments or trailing commas)
+- Use plain ` ``` ` for non-code content (error messages, plain text examples)
+
 ## Key Rules
 - This is the single source of truth for user-facing documentation
 - The private repo (vs_active_8) contains internal dev docs only

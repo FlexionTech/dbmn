@@ -243,25 +243,10 @@ Click **More Actions** → **Duplicate** to create a copy of any saved endpoint.
 
 ---
 
-## Keyboard Shortcuts
-
-| Shortcut | Action |
-|----------|--------|
-| Ctrl+S | Save endpoint |
-| Ctrl+M | Cycle line variable (4 states) |
-| Ctrl+Shift+M | Insert/remove `{{}}` at cursor |
-| Ctrl+/ | Toggle line comment |
-| Ctrl+D | Delete line |
-| Ctrl+Z | Undo |
-| Ctrl+Shift+Z | Redo |
-| Alt+D E | Quick access search |
-
----
-
 ## Related Topics
 
 - [Template Variables](template-variables) — Full variable syntax, types, modifiers, and editing features
 - [Environments](environments) — Manage API connections and authentication
 - [Batch Preparation](batch-preparation) — Loading data and column mapping
 - [Import/Export](import-export) — Share configurations with your team
-- [Shortcuts](shortcuts) — All keyboard shortcuts
+- [Keyboard Shortcuts](shortcuts) — All keyboard shortcuts including editor shortcuts

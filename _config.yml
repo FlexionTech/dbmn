@@ -1,5 +1,5 @@
 title: Dobermann
-description: Mass data loading for Manhattan Active
+description: Bridging the gap between spreadsheets and JSON APIs
 url: https://dbmn.io
 baseurl: ""
 
@@ -67,3 +67,4 @@ exclude:
   - .sass-cache
   - .jekyll-cache
   - .git
+  - CLAUDE.md

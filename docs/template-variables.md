@@ -1,408 +1,507 @@
 ---
 title: Template Variables
 layout: default
-nav_order: 7
-parent: Documentation
+nav_order: 1
+parent: Endpoints
+grand_parent: Documentation
 ---
 
 # Template Variables
 
-## Overview
+Template variables are what make Dobermann powerful. They turn a static JSON template into a dynamic engine that validates, transforms, and maps your spreadsheet data into perfectly structured API requests — row by row, at scale.
 
-Dobermann supports template variables across all API request components: request body, URL path, query parameters, and headers. This guide explains how to use template variables effectively with both single API execution and batch processing.
+Variables work everywhere: request body, URL path, query parameters, and headers.
 
-## Template Variable Syntax
+---
 
-### Basic Syntax
-Template variables use double bracket notation: `{{VARIABLE_NAME}}`
+## The Template Editor
 
-### Shorthand Syntax (JSON Body Only)
-In JSON request bodies, you can use shorthand `{{}}` syntax where the JSON key becomes the variable name:
+The fastest way to build templates is with the **body editor toolbar** — no need to type variable syntax by hand.
+
+### Ctrl+M — Line Variable Cycling
+
+Place your cursor on any JSON key-value line and press **Ctrl+M** (or Cmd+M on Mac). Dobermann cycles through four states:
+
+{% raw %}
+**State 1 → Input Variable:**
+```json
+"quantity": 100
+```
+becomes:
+```json
+"quantity": "{{quantity:number}}", //100
+```
+Dobermann infers the variable name from the key and the type from the value. The original value is preserved in a comment so you can always get back.
+
+**State 2 → Environment Variable:**
+```json
+"quantity": "{{ENV:}}", //100
+```
+Cursor lands after `ENV:` with autocomplete ready — type to pick from your environment's variables.
+
+**State 3 → Auto Variable:**
+```json
+"quantity": "{{A8:}}", //100
+```
+Same behaviour — autocomplete suggests `sequence`, `date`, `datetime`.
+
+**State 4 → Restore Original:**
+```json
+"quantity": 100
+```
+Back to the original value from the comment. Cycle too far? Just press Ctrl+Z to undo.
+{% endraw %}
+
+### Ctrl+Shift+M — Insert Variable Brackets
+
+{% raw %}
+Press **Ctrl+Shift+M** to insert `{{}}` at the cursor position. If the cursor is already inside a variable, it removes the entire `{{...}}` instead. Autocomplete triggers immediately after insertion.
+{% endraw %}
+
+### Modifier Toolbar
+
+{% raw %}
+When your cursor is inside a variable like `{{sku:string}}`, the **Modifier** dropdown becomes active. It shows context-aware options based on the variable's data type:
+
+- **String variables:** `upper`, `lower`, length range (`3-50`), `noTrim`
+- **Number variables:** `>0`, `>=0`, `int`, `rnd(2)`, `floor`, `ceil`
+- **Date/DateTime variables:** `+1d`, `-1d`, `+4h`, `+30m` (date math)
+- **All types:** `asString`, `opt`, `null`
+
+Click a modifier and it's inserted before the closing `}}`:
+```
+{{sku:string}}  →  {{sku:string|upper}}
+```
+{% endraw %}
+
+### Autocomplete
+
+{% raw %}
+The editor provides intelligent suggestions as you type inside `{{...}}`:
+
+| You type | Suggestions shown |
+|----------|-------------------|
+| `{{` | `A8:` and `ENV:` prefixes |
+| `{{A8:` | `sequence`, `date`, `datetime` |
+| `{{varName:` | `string`, `number`, `boolean`, `date`, `datetime` |
+| `{{varName:date:` | `iso`, `YYYY-MM-DD`, `DD-MM-YYYY`, etc. |
+| `{{varName:string\|` | `upper`, `lower`, `3-50`, `opt`, `null`, etc. |
+| `{{varName:number\|` | `>0`, `>=0`, `int`, `rnd(2)`, `floor`, `ceil`, etc. |
+| `{{varName:date\|` | `+1d`, `-1d`, `+4h`, `+30m`, etc. |
+{% endraw %}
+
+### Syntax Highlighting
+
+Variables are colour-coded in the editor so you can spot issues at a glance:
+
+| Element | Colour |
+|---------|--------|
+| {% raw %}`{{ }}`{% endraw %} brackets | Dim grey |
+| User variables | Cyan/Blue |
+| A8 and ENV prefixes | Green |
+| Data types | Blue |
+| Format specifiers | Orange |
+| Validation modifiers | Yellow/Gold |
+| Transform modifiers | Purple |
+| Errors | Red underline |
+
+---
+
+## Basic Templates
+
+{% raw %}
+### Variable Syntax
+
+Template variables use double-bracket notation:
+
+```
+{{variableName}}              — Simple variable (string type)
+{{variableName:type}}         — Variable with explicit type
+{{variableName:type|modifier}} — Variable with type and modifier(s)
+```
+
+### Data Types
+
+Specify a type after the colon to enable validation and proper JSON output:
+
+| Type | Syntax | CSV Input Examples | JSON Output |
+|------|--------|--------------------|-------------|
+| **string** | `{{Name:string}}` | Any text | `"Hello"` |
+| **number** | `{{Qty:number}}` | `123`, `45.67`, `-5` | `123` (unquoted) |
+| **boolean** | `{{Active:boolean}}` | `true`, `yes`, `1`, `on` | `true` (unquoted) |
+| **date** | `{{OrderDate:date}}` | `2024-01-15`, `15/01/2024` | `"20240115"` |
+| **datetime** | `{{Created:datetime}}` | `2024-01-15T14:30:00` | `"2024-01-15T14:30:00"` |
+
+String is the default — `{{Name}}` is the same as `{{Name:string}}`.
+
+### Example Template
 
 ```json
 {
-    "ItemId": "{{}}",           // Variable name inferred as "ItemId"
-    "Quantity": "{{:number}}",  // Variable name "Quantity" with number type
-    "IsActive": "{{:boolean}}"  // Variable name "IsActive" with boolean type
+    "Data": [
+        {
+            "ItemId": "PRE-{{sku:string}}",
+            "Quantity": "{{quantity:number}}",
+            "IsActive": "{{activeFlag:boolean}}",
+            "LoadDate": "{{loadDate:date}}"
+        }
+    ]
 }
 ```
 
-This is equivalent to:
+When you run a batch, Dobermann maps each source data column to a variable, validates the values against the declared types, and generates one API request per row — with numbers as real numbers, booleans as real booleans, and dates in the right format.
+{% endraw %}
+
+### Where Variables Work
+
+{% raw %}
+| Location | Example | Encoding |
+|----------|---------|----------|
+| **Request Body** | `"itemId": "{{sku:string}}"` | As-is (no encoding) |
+| **URL Path** | `/api/orders/{{orderId}}/status` | Automatically URL-encoded |
+| **Query Parameters** | `limit={{maxResults:number}}` | Automatically URL-encoded |
+| **Headers** | `Authorization: Bearer {{token}}` | As-is (no encoding) |
+{% endraw %}
+
+---
+
+## Environment Variables (ENV)
+
+{% raw %}
+Reference values from your active environment using the `ENV:` prefix:
+
 ```json
 {
-    "ItemId": "{{ItemId}}",
-    "Quantity": "{{Quantity:number}}",
-    "IsActive": "{{IsActive:boolean}}"
+    "organization": "{{ENV:org}}",
+    "host": "{{ENV:host}}",
+    "warehouse": "{{ENV:warehouse}}"
 }
 ```
+{% endraw %}
 
-**When to use shorthand:**
-- When your JSON key names match your CSV column names
-- To reduce repetition in templates
-- For cleaner, more readable templates
+**Key behaviours:**
+- ENV variables are **not** prompted during Run API
+- ENV variables **don't** appear in the data entry grid during Run Batch
+- They're resolved automatically from your active environment's variable list
+- If a variable is missing, execution fails with a clear error
 
-**Limitations:**
-- Only works in JSON body templates (not URL, query params, or headers)
-- The JSON key must be a valid variable name
+Set environment variables in your Environment settings (Environments tree → select environment → Variables section).
 
-### Type-Specific Syntax
-For enhanced validation and data processing, you can specify data types:
-- `{{VARIABLE_NAME:string}}` - Text values (default)
-- `{{VARIABLE_NAME:number}}` - Numeric values (integers or decimals)
-- `{{VARIABLE_NAME:boolean}}` - Boolean values (true/false)
-- `{{VARIABLE_NAME:date}}` - Date values (outputs YYYYMMDD by default)
-- `{{VARIABLE_NAME:datetime}}` - DateTime values (outputs local format by default)
+---
 
-### Date/DateTime Format Modifiers
+## Automatic Variables (A8)
 
-Template variables with `:date` or `:datetime` types support format modifiers to control the output format. The syntax is `{{VARIABLE_NAME:type:format}}`.
+{% raw %}
+System-generated values computed at execution time. You're never prompted for these — they just work.
 
-**Date Type Formats:**
+| Variable | Output | Description |
+|----------|--------|-------------|
+| `{{A8:sequence}}` | `1001`, `1002`, ... | Auto-incrementing number per endpoint |
+| `{{A8:date}}` | `20260217` | Current date (YYYYMMDD) |
+| `{{A8:datetime}}` | `2026-02-17T14:30:00` | Current UTC timestamp |
+| `{{A8:PAGE}}` | `1`, `2`, `3`, ... | Page number for pagination |
 
-| Syntax | Output | Description |
-|--------|--------|-------------|
-| `{{COL:date}}` | `20240104` | Default - YYYYMMDD (no dashes) |
-| `{{COL:date:iso}}` | `2024-01-04` | ISO format with dashes |
-| `{{COL:date:DD-MM-YYYY}}` | `04-01-2024` | European format |
-| `{{COL:date:MM-DD-YYYY}}` | `01-04-2024` | US format |
-| `{{COL:date:YYYY/MM/DD}}` | `2024/01/04` | Custom format |
+### A8 Date Formats
 
-**DateTime Type Formats:**
+| Syntax | Output |
+|--------|--------|
+| `{{A8:date}}` | `20260217` |
+| `{{A8:date:iso}}` | `2026-02-17` |
+| `{{A8:datetime}}` | `2026-02-17T14:30:00` |
+| `{{A8:datetime:iso}}` | `2026-02-17T14:30:00.000Z` |
+| `{{A8:datetime:date}}` | `2026-02-17` |
+| `{{A8:datetime:time}}` | `14:30:00` |
+| `{{A8:datetime:HH:mm}}` | `14:30` |
 
-| Syntax | Output | Description |
-|--------|--------|-------------|
-| `{{COL:datetime}}` | `2024-01-04T14:30:00` | Default - Local format (no ms, no Z) |
-| `{{COL:datetime:iso}}` | `2024-01-04T14:30:00.000Z` | Full ISO 8601 |
-| `{{COL:datetime:date}}` | `2024-01-04` | Date portion only |
-| `{{COL:datetime:time}}` | `14:30:00` | Time portion only |
-| `{{COL:datetime:HH:mm}}` | `14:30` | Custom time format |
+### Sequence Modifiers (Nested Arrays)
 
-**Example Template:**
+When templates have nested arrays, control how sequences behave:
+
+| Modifier | Syntax | Behaviour |
+|----------|--------|-----------|
+| Default | `{{A8:sequence}}` | Same value for the entire request |
+| Local | `{{A8:sequence:local}}` | Unique within each array, resets per array |
+| Global | `{{A8:sequence:global}}` | Unique per item, persisted per array path |
+| Parent | `{{A8:sequence:parent}}` | Reuse the parent element's sequence value |
+
+**Example — Order with Line Items:**
 ```json
 {
-    "compactDate": "{{ORDER_DATE:date}}",
-    "isoDate": "{{ORDER_DATE:date:iso}}",
-    "euroDate": "{{ORDER_DATE:date:DD-MM-YYYY}}",
-    "timestamp": "{{SHIP_TIME:datetime}}",
-    "isoTimestamp": "{{SHIP_TIME:datetime:iso}}",
-    "dateOnly": "{{SHIP_TIME:datetime:date}}",
-    "timeOnly": "{{SHIP_TIME:datetime:time}}"
+    "OrderId": "ORDER-{{A8:sequence}}",
+    "Lines": [
+        {
+            "LineId": "{{A8:sequence:local}}",
+            "ParentRef": "{{A8:sequence:parent}}"
+        }
+    ]
 }
 ```
+{% endraw %}
 
-**Format Tokens:**
+---
 
-| Token | Output | Description |
-|-------|--------|-------------|
-| `YYYY` | 2024 | 4-digit year |
-| `YY` | 24 | 2-digit year |
-| `MM` | 01 | Month (01-12) |
-| `DD` | 04 | Day (01-31) |
-| `HH` | 14 | Hour 24h (00-23) |
-| `hh` | 02 | Hour 12h (01-12) |
-| `mm` | 30 | Minutes (00-59) |
-| `ss` | 00 | Seconds (00-59) |
+## Advanced Templates — Modifiers
 
-**Important Notes:**
-- All datetime processing uses UTC timezone
-- CSV dates without timezone info are parsed as local time, then converted to UTC
-- Use `:date` modifier if you only need the date portion and want to avoid timezone shifts
+Modifiers are where things get powerful. Chain them with the pipe (`|`) character to validate, transform, and control how values are processed — **before** the API request is sent.
 
-### String and Number Modifiers
+{% raw %}
+**Syntax:** `{{variableName:type|modifier1|modifier2|modifier3}}`
 
-Template variables with `:string` or `:number` types support validation and transformation modifiers. These modifiers help ensure data quality by validating values against constraints and applying transformations before API execution.
-
-**Syntax:** `{{VARIABLE_NAME:type|modifier1|modifier2|modifier3}}`
-
-**Key Syntax Rule:**
+**Key rule:**
 - **Colon (`:`)** = FORMAT (dates only): `{{Date:date:iso}}`
 - **Pipe (`|`)** = MODIFIER (all types): `{{Name:string|upper}}`
+{% endraw %}
 
-Modifiers are pipe-delimited (`|`) and can be chained together.
+### Empty Value Modifiers
 
-#### Empty Value Modifiers (All Types)
+These control what happens when a value is empty or missing. They work with **all** data types.
 
-These modifiers control behavior when a value is empty or missing. They work with all data types (string, number, boolean, date, datetime).
+{% raw %}
+| Modifier | Syntax | What Happens When Empty |
+|----------|--------|------------------------|
+| *(default)* | `{{Name:string}}` | String → `""`, Number → `0` |
+| **opt** | `{{Code:string\|opt}}` | Entire key is **omitted** from JSON |
+| **null** | `{{Qty:number\|null}}` | Value is **null** in JSON |
+| **asString** | `{{Qty:number\|asString}}` | Number/boolean output as a JSON string (e.g. `"123"` instead of `123`) |
 
-| Modifier | Syntax | Example | Description |
-|----------|--------|---------|-------------|
-| Default | *(none)* | `{{Name:string}}` | Current behavior (string=`""`, number=`0`) |
-| Optional | `opt` | `{{Code:string\|opt}}` | **Omit key entirely** if value is empty |
-| Null | `null` | `{{Qty:number\|null}}` | **Pass null** if value is empty |
+#### The opt Modifier — Conditional Key Omission
 
-**With `opt` modifier - Omit key entirely:**
+This is incredibly useful for APIs that treat missing keys differently from empty values:
+
 ```json
 // Template
-{ "code": "{{Code:string|opt}}", "name": "{{Name:string}}" }
-
-// If Code is empty:  { "name": "Test" }              <- key omitted
-// If Code is "ABC":  { "code": "ABC", "name": "Test" }
+{
+    "code": "{{Code:string|opt}}",
+    "name": "{{Name:string}}"
+}
 ```
 
-**With `null` modifier - Pass null value:**
+| Code value | Name value | JSON Output |
+|------------|------------|-------------|
+| `"ABC"` | `"Test"` | `{ "code": "ABC", "name": "Test" }` |
+| *(empty)* | `"Test"` | `{ "name": "Test" }` — code key completely removed |
+
+#### The null Modifier
+
 ```json
 // Template
 { "qty": "{{Qty:number|null}}", "name": "{{Name:string}}" }
 
-// If Qty is empty:  { "qty": null, "name": "Test" }  <- null value
-// If Qty is "5":    { "qty": 5, "name": "Test" }
+// Qty is empty → { "qty": null, "name": "Test" }
+// Qty is "5"   → { "qty": 5, "name": "Test" }
 ```
 
-#### String Modifiers
+#### The asString Modifier
 
-| Modifier | Syntax | Example | Description |
-|----------|--------|---------|-------------|
-| Trim | *(default)* | `{{Name:string}}` | Whitespace trimmed automatically |
-| No trim | `noTrim` | `{{Code:string\|noTrim}}` | Keep leading/trailing spaces |
-| Exact length | `n` | `{{Code:string\|3}}` | **Exactly** 3 characters |
-| Min length | `n-` | `{{Name:string\|3-}}` | At least 3 characters |
-| Max length | `-n` | `{{Code:string\|-10}}` | At most 10 characters |
-| Range | `n-m` | `{{Desc:string\|5-100}}` | Between 5 and 100 characters |
-| Uppercase | `upper` | `{{Code:string\|upper}}` | Convert to UPPERCASE |
-| Lowercase | `lower` | `{{Email:string\|lower}}` | Convert to lowercase |
+Forces the output as a JSON string, regardless of type:
 
-#### Number Modifiers
-
-| Modifier | Syntax | Example | Description |
-|----------|--------|---------|-------------|
-| Greater than | `>n` | `{{Qty:number\|>0}}` | Must be greater than 0 |
-| Greater/equal | `>=n` | `{{Stock:number\|>=0}}` | Must be 0 or more |
-| Less than | `<n` | `{{Discount:number\|<100}}` | Must be less than 100 |
-| Less/equal | `<=n` | `{{Pct:number\|<=100}}` | Must be 100 or less |
-| Integer | `int` | `{{Count:number\|int}}` | Whole numbers only |
-| Round | `rnd(n)` | `{{Price:number\|rnd(2)}}` | Round to 2 decimals |
-| Floor | `floor` | `{{Qty:number\|floor}}` | Round down |
-| Ceil | `ceil` | `{{Qty:number\|ceil}}` | Round up |
-
-#### Date Math Modifiers
-
-Works with both CSV date columns and A8 system variables:
-
-| Modifier | Syntax | Example | Description |
-|----------|--------|---------|-------------|
-| Add days | `+nd` | `{{A8:datetime\|+2d}}` | Add 2 days |
-| Subtract days | `-nd` | `{{ShipDate:date\|-1d}}` | Subtract 1 day |
-| Add hours | `+nh` | `{{A8:datetime\|+4h}}` | Add 4 hours |
-| Add minutes | `+nm` | `{{A8:datetime\|+30m}}` | Add 30 minutes |
-
-#### Modifier Execution Order
-
-When multiple modifiers are specified, they execute in this order:
-
-1. **Pre-transform** - String transforms (trim, upper, lower)
-2. **Type conversion** - Convert string to target type
-3. **Post-transform** - Type-specific transforms (rnd, floor, ceil, date math)
-4. **Validate** - Apply validation modifiers (length, comparisons, int)
-
-#### Validation Behavior
-
-Modifiers validate data **before** API execution:
-
-- In **Run API** mode: Validation errors shown inline before execution
-- In **Run Batch** mode: All rows validated after column mapping; execution blocked if any row fails
-
-#### Real-World Template Example
-
-```json
-{
-    "Data": [
-        {
-            "ItemId": "{{:string|5-50|upper}}",
-            "ItemDescription": "{{Desc:string|-500}}",
-            "StandardUOMCode": "{{UOM:string|2-10|upper}}",
-            "Quantity": "{{Qty:number|int|>0}}",
-            "ItemWeight": "{{Weight:number|>=0|rnd(3)|null}}",
-            "ItemCost": "{{Cost:number|>=0|rnd(2)}}",
-            "AlternateCode": "{{AltCode:string|10|opt}}",
-            "TransactionDate": "{{A8:datetime}}",
-            "ShipByDate": "{{A8:datetime:iso|+2d}}"
-        }
-    ]
-}
 ```
-
-## Using Template Variables in Different Locations
-
-### 1. Request Body Templates (POST/PUT/PATCH)
-
-```json
-{
-    "Data": [
-        {
-            "ItemId": "PREFIX-{{SKU:string}}",
-            "Quantity": "{{PRICED_QTY:number}}",
-            "IsActive": "{{ACTIVE_FLAG:boolean}}",
-            "LoadDate": "{{LOAD_DATE:date}}"
-        }
-    ]
-}
+{{Qty:number|asString}}      → 123 outputs as "123"
+{{Flag:boolean|asString}}    → true outputs as "true"
+{{A8:sequence|asString}}     → 1001 outputs as "1001"
 ```
+{% endraw %}
 
-### 2. URL Path Templates
+Useful when your API expects string representations of numbers or booleans.
 
-Template variables can be used directly in the URL path:
+### String Modifiers
 
-- `/api/orders/{{orderId}}/status`
-- `/api/users/{{userId:number}}/profile`
-- `/api/products/{{category:string}}/{{productId}}/details`
-
-Values are automatically URL-encoded when replaced in paths.
-
-### 3. Query Parameter Templates
-
-Add template variables to query parameter values:
-
-- Parameter: `itemId`, Value: `PREFIX-{{SKU}}`
-- Parameter: `limit`, Value: `{{maxResults:number}}`
-- Parameter: `includeActive`, Value: `{{isActive:boolean}}`
-
-Query parameter values are automatically URL-encoded.
-
-### 4. Header Templates
-
-Use template variables in HTTP headers:
-
-- Header: `Authorization`, Value: `Bearer {{authToken:string}}`
-- Header: `X-User-ID`, Value: `{{userId:number}}`
-- Header: `X-Request-ID`, Value: `REQ-{{requestId}}`
-
-Header values are used as-is without URL encoding.
-
-## Automatic Variables (A8)
-
-Automatic variables (prefix `A8:` where A8 = **A**utomatic) are system-generated values computed at execution time.
-
-**Key Behavior:**
-- You will **NOT** be prompted for these during "Run API" parameter collection
-- They do **NOT** appear in the "Enter Data" grid during "Run Batch"
-- They **cannot** be mapped to CSV columns - values are generated automatically
-- Use these for timestamps, sequence numbers, and other computed values
-
-### Available Automatic Variables
-
-| Variable | Output | Description |
+{% raw %}
+| Modifier | Syntax | Description |
 |----------|--------|-------------|
-| `{{A8:sequence}}` | `1001`, `1002`, ... | Sequential numbering |
-| `{{A8:date}}` | `20260112` | Current date (YYYYMMDD) |
-| `{{A8:datetime}}` | `2026-01-12T22:29:06` | Current timestamp (UTC, no milliseconds) |
+| Trim | *(default)* | Whitespace trimmed automatically |
+| No trim | `noTrim` | Preserve leading/trailing spaces |
+| Exact length | `n` | `{{Code:string\|3}}` — exactly 3 characters |
+| Min length | `n-` | `{{Name:string\|3-}}` — at least 3 characters |
+| Max length | `-n` | `{{Code:string\|-10}}` — at most 10 characters |
+| Range | `n-m` | `{{Desc:string\|5-100}}` — between 5 and 100 characters |
+| Uppercase | `upper` | `{{SKU:string\|upper}}` — converts to UPPERCASE |
+| Lowercase | `lower` | `{{Email:string\|lower}}` — converts to lowercase |
+{% endraw %}
 
-### Datetime Format Options
+**Chaining example:** {% raw %}`{{SKU:string|5-10|upper}}`{% endraw %} — validates length between 5-10 characters AND converts to uppercase.
 
-The `A8:datetime` and `A8:date` variables support format specifiers:
+### Number Modifiers
 
-**Named Presets:**
+{% raw %}
+| Modifier | Syntax | Description |
+|----------|--------|-------------|
+| Greater than | `>n` | `{{Qty:number\|>0}}` — must be > 0 |
+| Greater/equal | `>=n` | `{{Stock:number\|>=0}}` — must be >= 0 |
+| Less than | `<n` | `{{Discount:number\|<100}}` — must be < 100 |
+| Less/equal | `<=n` | `{{Pct:number\|<=100}}` — must be <= 100 |
+| Integer | `int` | `{{Count:number\|int}}` — whole numbers only |
+| Round | `rnd(n)` | `{{Price:number\|rnd(2)}}` — round to 2 decimal places |
+| Floor | `floor` | `{{Qty:number\|floor}}` — round down |
+| Ceil | `ceil` | `{{Qty:number\|ceil}}` — round up |
+{% endraw %}
+
+**Chaining example:** {% raw %}`{{Price:number|>=0|rnd(2)}}`{% endraw %} — must be non-negative AND rounded to 2 decimals.
+
+### Date/DateTime Format Modifiers
+
+{% raw %}
+Control the output format of date and datetime values using the colon syntax:
+
+**Date formats:**
 
 | Syntax | Output | Description |
 |--------|--------|-------------|
-| `{{A8:datetime}}` | `2026-01-12T22:29:06` | Default - UTC without ms/Z |
-| `{{A8:datetime:iso}}` | `2026-01-12T22:29:06.729Z` | Full ISO 8601 with milliseconds |
-| `{{A8:datetime:date}}` | `2026-01-12` | Date only with dashes |
-| `{{A8:datetime:time}}` | `22:29:06` | Time only |
-| `{{A8:date}}` | `20260112` | Default - YYYYMMDD |
-| `{{A8:date:iso}}` | `2026-01-12` | Date with dashes |
+| `{{COL:date}}` | `20240104` | Default — YYYYMMDD (compact) |
+| `{{COL:date:iso}}` | `2024-01-04` | ISO format with dashes |
+| `{{COL:date:DD-MM-YYYY}}` | `04-01-2024` | European format |
+| `{{COL:date:MM-DD-YYYY}}` | `01-04-2024` | US format |
+| `{{COL:date:YYYY/MM/DD}}` | `2024/01/04` | Custom with slashes |
 
-### Sequence Modifiers for Nested Arrays
+**DateTime formats:**
 
-When working with nested arrays, the `A8:sequence` variable supports modifiers to control sequencing behavior:
+| Syntax | Output | Description |
+|--------|--------|-------------|
+| `{{COL:datetime}}` | `2024-01-04T14:30:00` | Default — UTC, no milliseconds |
+| `{{COL:datetime:iso}}` | `2024-01-04T14:30:00.000Z` | Full ISO 8601 |
+| `{{COL:datetime:date}}` | `2024-01-04` | Date portion only |
+| `{{COL:datetime:time}}` | `14:30:00` | Time portion only |
+| `{{COL:datetime:HH:mm}}` | `14:30` | Custom time format |
+{% endraw %}
 
-| Modifier | Syntax | Behavior |
-|----------|--------|----------|
-| Default | `{{A8:sequence}}` | Same value per request |
-| `:local` | `{{A8:sequence:local}}` | Unique within array, resets each array |
-| `:global` | `{{A8:sequence:global}}` | Unique per item, persisted per array path |
-| `:parent` | `{{A8:sequence:parent}}` | Reuse parent element's sequence |
+**Format tokens:** `YYYY` (year), `YY` (2-digit year), `MM` (month), `DD` (day), `HH` (24h hour), `hh` (12h hour), `mm` (minutes), `ss` (seconds), `A` (AM/PM).
 
-**Example - Order Lines:**
+### Date Math Modifiers
+
+{% raw %}
+Add or subtract time from date values — works with both CSV dates and A8 system variables:
+
+| Unit | Example | Description |
+|------|---------|-------------|
+| Days | `+2d`, `-1d` | Add/subtract days |
+| Weeks | `+1w`, `-2w` | Add/subtract weeks |
+| Months | `+2M`, `-1M` | Add/subtract months (**capital M**) |
+| Years | `+1y`, `-1y` | Add/subtract years |
+| Hours | `+4h`, `-2h` | Add/subtract hours |
+| Minutes | `+30m`, `-15m` | Add/subtract minutes (**lowercase m**) |
+
+**Important:** `M` (months) vs `m` (minutes) — case matters!
+
+**Examples:**
+```
+{{ShipDate:date|+2d}}              — Ship date plus 2 days
+{{A8:datetime:iso|+4h}}            — Current time plus 4 hours, ISO format
+{{OrderDate:date:DD-MM-YYYY|+30d}} — Custom format plus 30 days
+{{Reminder:datetime|+30m}}         — Current time plus 30 minutes
+```
+{% endraw %}
+
+### Modifier Execution Order
+
+When multiple modifiers are chained, they execute in a fixed order (regardless of how you write them):
+
+1. **Pre-transform** — String transforms: trim, upper, lower
+2. **Type conversion** — Convert the string value to the target type
+3. **Post-transform** — Type-specific: rnd, floor, ceil, date math
+4. **Validate** — Check constraints: length ranges, comparisons, int
+
+{% raw %}
+This means `{{Price:number|rnd(2)|>0}}` and `{{Price:number|>0|rnd(2)}}` produce identical results.
+{% endraw %}
+
+### Validation Behaviour
+
+Modifiers validate data **before** API execution:
+
+- **Run API mode:** Validation errors shown inline before the request fires
+- **Run Batch mode:** All rows validated after column mapping — execution is blocked if any row fails, with clear error messages showing which rows have problems
+
+{% raw %}
+**Example validation errors:**
+```
+Row 15: Variable 'Name' value 'AB' failed validation: minimum length is 3 characters
+Row 23: Variable 'Amount' value '-5' failed validation: must be greater than 0
+Row 47: Variable 'Qty' value '3.14' failed validation: must be an integer
+```
+{% endraw %}
+
+---
+
+## Real-World Template
+
+Putting it all together — a template that validates, transforms, and handles missing data:
+
+{% raw %}
 ```json
 {
-  "OriginalOrderId": "ORDER-{{A8:sequence}}",
-  "OriginalOrderLine": [
-    {
-      "OriginalOrderLineId": "{{A8:sequence:local}}",
-      "ParentOrderRef": "{{A8:sequence:parent}}"
-    }
-  ]
+    "Data": [
+        {
+            "ItemId": "{{ItemId:string|5-50|upper}}",
+            "Description": "{{Desc:string|-500}}",
+            "UOMCode": "{{UOM:string|2-10|upper}}",
+            "Quantity": "{{Qty:number|int|>0}}",
+            "Weight": "{{Weight:number|>=0|rnd(3)|null}}",
+            "Cost": "{{Cost:number|>=0|rnd(2)}}",
+            "AlternateCode": "{{AltCode:string|10|opt}}",
+            "TransactionDate": "{{A8:datetime}}",
+            "ShipByDate": "{{A8:datetime:iso|+2d}}",
+            "CreatedBy": "{{ENV:username}}"
+        }
+    ]
 }
 ```
+{% endraw %}
 
-## Template Editor Experience
+This template:
+- Validates ItemId is 5-50 characters and forces uppercase
+- Limits Description to 500 characters max
+- Requires Quantity as a positive integer
+- Rounds Weight to 3 decimals, outputs `null` if empty
+- Rounds Cost to 2 decimals
+- Omits AlternateCode entirely if empty (opt modifier)
+- Auto-generates timestamp and a ship-by date 2 days in the future
+- Pulls the username from the active environment
 
-### Syntax Highlighting
+---
 
-Template variables are color-coded based on their type:
+## Empty Value Reference
 
-| Variable Type | Color | Example |
-|--------------|-------|---------|
-| Automatic Variables (A8) | Green | `{{A8:sequence}}`, `{{A8:date}}` |
-| Environment Variables (ENV) | Green | `{{ENV:host}}`, `{{ENV:org}}` |
-| User Variables | Cyan/Blue | `{{orderId}}`, `{{quantity:number}}` |
-| Type Modifiers | Purple | `:string`, `:number`, `:date` |
-| Format Specifiers | Orange | `:iso`, `:YYYY-MM-DD` |
-| Invalid/Errors | Red underline | `{{A8:invalid}}`, `{{var:badtype}}` |
+Quick reference for how empty values are handled across all types:
 
-### Autocomplete
+{% raw %}
+| Type | Default | With `\|opt` | With `\|null` |
+|------|---------|-------------|---------------|
+| string | `""` | Key omitted | `null` |
+| number | `0` | Key omitted | `null` |
+| boolean | Error | Key omitted | `null` |
+| date | Error | Key omitted | `null` |
+| datetime | Error | Key omitted | `null` |
+{% endraw %}
 
-The editor provides intelligent autocomplete suggestions:
+---
 
-1. **Type `{{`** - Shows `A8:` suggestion to start an Automatic variable
-2. **Type `{{A8:`** - Shows available Automatic variables: `sequence`, `date`, `datetime`
-3. **Type `{{varName:`** - Shows type modifiers: `string`, `number`, `boolean`, `date`, `datetime`
-4. **Type `{{varName:date:`** - Shows format options: `iso`, `YYYY-MM-DD`, etc.
+## Shorthand Syntax
+{: #shorthand }
 
-### Keyboard Shortcuts
+{: .note }
+> Shorthand is a convenience for simple templates. For most use cases, the **Ctrl+M** toolbar workflow is faster and less error-prone.
 
-| Shortcut | Action |
-|----------|--------|
-| `Ctrl+M` / `Cmd+M` | Cycle line variable (Value -> Input -> ENV -> A8 -> restore) |
-| `Ctrl+Z` / `Cmd+Z` | Undo last change |
-| `Ctrl+/` / `Cmd+/` | Toggle line comment |
-| `Ctrl+S` / `Cmd+S` | Save endpoint |
+{% raw %}
+In JSON request bodies, you can use empty brackets `{{}}` where the JSON key name becomes the variable name automatically:
 
-## CSV Batch Processing
+```json
+{
+    "ItemId": "{{}}",           // Equivalent to: {{ItemId:string}}
+    "Quantity": "{{:number}}",  // Equivalent to: {{Quantity:number}}
+    "IsActive": "{{:boolean}}"  // Equivalent to: {{IsActive:boolean}}
+}
+```
+{% endraw %}
 
-### Enhanced Column Mapping
+**Limitations:**
+- Only works in JSON body templates (not URL, query params, or headers)
+- The JSON key must be a valid variable name
+- Doesn't support modifiers — switch to explicit syntax for validation and transforms
 
-The CSV upload modal shows comprehensive variable information:
-
-- **Variable Name:** The template variable name
-- **Type:** Data type (with color-coded pills)
-- **Sources:** Where the variable is used (URL, Query Param, Header, Body)
-- **CSV Column:** Dropdown to select source column
-- **Sample Value:** Preview of how the value will appear
-
-## Data Type Validation
-
-### Supported Data Types
-
-**String (default):** Any text value, used as-is.
-
-**Number:** Integers (`123`, `-45`), decimals (`123.45`), scientific notation (`1.5e-4`).
-
-**Boolean:** True values: `true`, `yes`, `y`, `1`, `on`. False values: `false`, `no`, `n`, `0`, `off` (all case-insensitive).
-
-**Date:** ISO format (`2023-12-25`), US format (`12/25/2023`), European format (`25/12/2023`).
-
-## Encoding Behavior
-
-| Location | Encoding |
-|----------|----------|
-| URL Path | Automatically URL-encoded |
-| Query Parameters | Automatically URL-encoded |
-| Headers | Used as-is (no encoding) |
-| Body | Used as-is (no encoding) |
-
-## Best Practices
-
-- Use descriptive variable names: `{{orderId}}` instead of `{{id}}`
-- Always specify types for validation: `{{qty:number}}`
-- Use `string` type explicitly for clarity
-- Document your variable usage in endpoint descriptions
-- Test with single execution before batch processing
+---
 
 ## Related Topics
 
-- [Getting Started](getting-started) - Installation and first steps
-- [Endpoints](endpoints) - Endpoint configuration
-- [Batch Preparation](batch-preparation) - CSV upload and column mapping
-- [Execution](execution) - Running individual and batch requests
-- [Shortcuts](shortcuts) - Keyboard shortcuts including template editor shortcuts
+- [Endpoints](../endpoints) — Endpoint configuration and editor toolbar
+- [Batch Preparation](../batch-preparation) — Loading data and column mapping
+- [Shortcuts](../shortcuts) — All keyboard shortcuts

@@ -7,7 +7,7 @@ has_children: true
 
 # Dobermann Documentation
 
-Welcome to the Dobermann documentation. Dobermann is a VS Code extension for mass data loading into Manhattan Active APIs.
+Welcome to the Dobermann documentation. Dobermann bridges the gap between spreadsheets and JSON APIs — making it fast and easy to interact with any API at scale.
 
 ## Quick Links
 
@@ -15,11 +15,11 @@ Welcome to the Dobermann documentation. Dobermann is a VS Code extension for mas
 |-------|-------------|
 | [Getting Started](getting-started) | Installation and first steps |
 | [Environments](environments) | Configure API connections and authentication |
-| [Endpoints](endpoints) | Set up API request configurations |
+| [Endpoints](endpoints) | Configure API requests, share with your team |
+| [↳ Template Variables](template-variables) | Variable syntax, types, modifiers, and editing |
 | [Batch Preparation](batch-preparation) | Load CSV/Excel files and map columns |
 | [Execution](execution) | Run individual and batch requests |
 | [Viewing Results](viewing-results) | Analyze transaction reports |
-| [Template Variables](template-variables) | Advanced variable syntax and formatting |
 | [Import/Export](import-export) | Share configurations with your team |
 | [Shortcuts](shortcuts) | Keyboard shortcuts for efficiency |
 | [Troubleshooting](troubleshooting) | Common issues and solutions |
@@ -27,13 +27,13 @@ Welcome to the Dobermann documentation. Dobermann is a VS Code extension for mas
 
 ## What is Dobermann?
 
-Dobermann enables you to execute API requests individually or in batches using CSV/Excel files. It provides:
+Excel is still the number one tool for working with data. But working with JSON APIs from a spreadsheet? Almost impossible. Dobermann bridges that gap — take your spreadsheet data, map it to an API template, and execute thousands of requests with validation, transformation, and real-time results.
 
-- **Endpoint Management** - Configure HTTP method, URL, headers, and body templates
-- **Environment Configuration** - Manage connections to different API environments
-- **Template Variables** - Dynamic request generation with `{{variable}}` syntax
-- **Batch Execution** - Process thousands of rows with parallel processing
-- **Comprehensive Reporting** - View detailed transaction results
+- **Endpoint Configuration** — Define HTTP method, URL, headers, body templates, and share them with your team
+- **Template Variables** — Map spreadsheet columns to API fields with type validation, modifiers, and conditional logic
+- **Environment Management** — Manage connections, authentication, and per-environment variables
+- **Batch Execution** — Process thousands of rows with parallel processing and live progress
+- **Real-Time Reporting** — Watch results stream in as your batch executes
 
 ## Installation
 

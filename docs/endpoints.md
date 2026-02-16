@@ -165,7 +165,7 @@ The **Share** button is one of Dobermann's best features. Click it and your enti
 
 **What gets copied (plain text format):**
 
-```
+```javascript
 // Name: Create Order
 // Method: POST
 // Path: /api/orders

@@ -23,29 +23,29 @@ The fastest way to build templates is with the **body editor toolbar** — no ne
 Place your cursor on any JSON key-value line and press **Ctrl+M** (or Cmd+M on Mac). Dobermann cycles through four states:
 
 **State 1 → Input Variable:**
-```
+```javascript
 "quantity": 100
 ```
 becomes:
-```
+```javascript
 "quantity": "{{quantity:number}}", //100
 ```
 Dobermann infers the variable name from the key and the type from the value. The original value is preserved in a comment so you can always get back.
 
 **State 2 → Environment Variable:**
-```
+```javascript
 "quantity": "{{ENV:}}", //100
 ```
 Cursor lands after `ENV:` with autocomplete ready — type to pick from your environment's variables.
 
 **State 3 → Auto Variable:**
-```
+```javascript
 "quantity": "{{A8:}}", //100
 ```
 Same behaviour — autocomplete suggests `sequence`, `date`, `datetime`.
 
 **State 4 → Restore Original:**
-```
+```javascript
 "quantity": 100
 ```
 Back to the original value from the comment. Cycle too far? Just press Ctrl+Z to undo.
@@ -249,7 +249,7 @@ These control what happens when a value is empty or missing. They work with **al
 
 This is incredibly useful for APIs that treat missing keys differently from empty values:
 
-```
+```javascript
 // Template
 {
     "code": "{{Code:string|opt}}",
@@ -264,7 +264,7 @@ This is incredibly useful for APIs that treat missing keys differently from empt
 
 #### The null Modifier
 
-```
+```javascript
 // Template
 { "qty": "{{Qty:number|null}}", "name": "{{Name:string}}" }
 
@@ -447,7 +447,7 @@ Quick reference for how empty values are handled across all types:
 
 In JSON request bodies, you can use empty brackets `{{}}` where the JSON key name becomes the variable name automatically:
 
-```
+```javascript
 {
     "ItemId": "{{}}",           // Equivalent to: {{ItemId:string}}
     "Quantity": "{{:number}}",  // Equivalent to: {{Quantity:number}}

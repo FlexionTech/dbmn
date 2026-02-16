@@ -1,10 +1,15 @@
+---
+layout: none
+title: Dobermann - REST API Client for Mass Data Operations
+description: The only VS Code API client designed for both individual API testing and industrial-scale batch data operations.
+---
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dobermann - REST API Client for Mass Data Operations</title>
-    <meta name="description" content="The only VS Code API client designed for both individual API testing and industrial-scale batch data operations.">
+    <title>{{ page.title }}</title>
+    <meta name="description" content="{{ page.description }}">
     <link rel="icon" type="image/png" href="/images/DBMNLogo.png">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -28,6 +33,13 @@
         }
         h1 { font-size: 3rem; margin-bottom: 1rem; }
         .tagline { font-size: 1.25rem; opacity: 0.8; margin-bottom: 2rem; max-width: 600px; }
+        .buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 1rem;
+        }
         .cta {
             display: inline-block;
             background: #0078d4;
@@ -42,6 +54,14 @@
         .cta:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 20px rgba(0,120,212,0.3);
+        }
+        .cta-secondary {
+            background: rgba(255,255,255,0.1);
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+        .cta-secondary:hover {
+            background: rgba(255,255,255,0.2);
+            box-shadow: 0 10px 20px rgba(255,255,255,0.1);
         }
         .features {
             margin-top: 3rem;
@@ -81,28 +101,36 @@
     <h1>Dobermann</h1>
     <p class="tagline">The REST API Client Built for Mass Data Operations. Process millions of rows, not just a few requests.</p>
 
-    <a href="https://marketplace.visualstudio.com/items?itemName=FlexionTech.active8" class="cta">
-        Install for VS Code
-    </a>
+    <div class="buttons">
+        <a href="https://marketplace.visualstudio.com/items?itemName=FlexionTech.active8" class="cta">
+            Install for VS Code
+        </a>
+        <a href="/docs/" class="cta cta-secondary">
+            Documentation
+        </a>
+        <a href="/blog/" class="cta cta-secondary">
+            Blog
+        </a>
+    </div>
 
     <div class="features">
         <div class="feature">
-            <div class="feature-icon">🎯</div>
+            <div class="feature-icon">&#127919;</div>
             <h3>1M+ Rows</h3>
             <p>Process massive CSV/Excel files with ease</p>
         </div>
         <div class="feature">
-            <div class="feature-icon">⚡</div>
+            <div class="feature-icon">&#9889;</div>
             <h3>16 Threads</h3>
             <p>Parallel execution for maximum speed</p>
         </div>
         <div class="feature">
-            <div class="feature-icon">🔄</div>
+            <div class="feature-icon">&#128260;</div>
             <h3>Pause/Resume</h3>
             <p>Full control over batch operations</p>
         </div>
         <div class="feature">
-            <div class="feature-icon">✨</div>
+            <div class="feature-icon">&#10024;</div>
             <h3>Share Templates</h3>
             <p>Build and share API templates like never before</p>
         </div>

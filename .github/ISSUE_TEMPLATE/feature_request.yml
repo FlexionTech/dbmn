@@ -1,0 +1,42 @@
+name: Feature Request
+description: Suggest an idea for Dobermann
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting an improvement to Dobermann! Please describe your idea below.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Use Case / Problem
+      description: What problem are you trying to solve? What's the use case?
+      placeholder: "I'm trying to... but currently I have to..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: Describe what you'd like to happen
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Have you considered any alternative solutions or workarounds?
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Any other context, screenshots, or examples
+    validations:
+      required: false

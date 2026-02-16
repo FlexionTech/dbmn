@@ -15,7 +15,7 @@ Built with Jekyll + just-the-docs theme. Deployed via GitHub Actions on push to 
 - `_config.yml` — Jekyll configuration
 - `.github/ISSUE_TEMPLATE/` — Public issue templates
 - `.github/workflows/deploy-pages.yml` — GitHub Actions deployment workflow
-- `scripts/escape-templates.sh` — Auto-escapes `{{}}` in docs for Jekyll
+- `scripts/escape-templates.sh` — Utility to escape `{{}}` for Liquid (not used in build pipeline)
 
 ## Adding a New Doc Page
 1. Create `docs/page-name.md` with front matter:
@@ -44,12 +44,12 @@ Built with Jekyll + just-the-docs theme. Deployed via GitHub Actions on push to 
 Dobermann uses `{{variable}}` syntax which clashes with Jekyll's Liquid templating.
 This is handled automatically — **write docs with `{{}}` naturally**, no escaping needed.
 
-The GitHub Actions workflow runs `scripts/escape-templates.sh` before Jekyll builds,
-which wraps all `{{...}}` in `{% raw %}...{% endraw %}` tags automatically.
+The `_config.yml` sets `render_with_liquid: false` for all files under `docs/`,
+which tells Jekyll 4 to skip Liquid processing entirely on documentation pages.
 Source files in the repo stay clean and readable.
 
-**Important:** This only processes `docs/*.md` files. Blog posts and `index.html`
-may use real Liquid syntax (e.g. `{{ post.title }}`) and are not escaped.
+**Important:** This only applies to `docs/*.md` files. Blog posts and `index.html`
+may use real Liquid syntax (e.g. `{{ post.title }}`) and are processed normally.
 
 ## Key Rules
 - This is the single source of truth for user-facing documentation
@@ -58,4 +58,4 @@ may use real Liquid syntax (e.g. `{{ post.title }}`) and are not escaped.
 - Changelog entries go in `docs/changelog.md`
 - Do not add internal development documentation here (devNotes, requirements, bugFixes)
 - Blog posts go in `_posts/` — use for release announcements, tips, use cases
-- Write `{{variable}}` naturally in docs — the build pipeline escapes them automatically
+- Write `{{variable}}` naturally in docs — `render_with_liquid: false` handles it

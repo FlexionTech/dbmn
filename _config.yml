@@ -54,6 +54,7 @@ defaults:
     values:
       layout: default
       nav_order: 100
+      render_with_liquid: false
   - scope:
       path: "_posts"
     values:

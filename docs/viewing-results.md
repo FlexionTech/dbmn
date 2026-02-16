@@ -228,6 +228,7 @@ Shows current page context:
 - Results append to existing table data
 
 ## Export Options
+{: #copy-options }
 
 Save execution results for external analysis or archival:
 

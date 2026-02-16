@@ -187,6 +187,13 @@ Authorization URL: https://tenant.sce.manh.com/oauth/authorize
 Token URL: https://tenant.sce.manh.com/oauth/token
 ```
 
+## Headers
+{: #headers }
+
+Environment-level headers are automatically included in every request. Toggle **Include environment-level headers** on any endpoint to inherit them.
+
+Manhattan Active environments automatically include organization headers (see below). You can also add custom headers in the environment's header configuration.
+
 ## Organization Selection (Manhattan Active)
 
 Manhattan Active APIs require organization headers. Dobermann automatically detects available organizations and provides a selection interface.
@@ -205,6 +212,18 @@ Manhattan Active APIs require organization headers. Dobermann automatically dete
 **Visual indicators:**
 - Green checkmark - Organization selected
 - Warning icon - No organization selected (required for Manhattan Active)
+
+## Variables
+{: #variables }
+
+Environment variables are key-value pairs accessible in templates via the `ENV:` prefix (e.g. `{{ENV:warehouse}}`). Set them in the Variables section of your environment configuration.
+
+Common uses:
+- Organization codes, warehouse IDs, tenant identifiers
+- API keys and tokens that vary between environments
+- Default values shared across multiple endpoints
+
+See [Template Variables — ENV](template-variables#environment-variables-env) for usage syntax.
 
 ## Environment Tree View
 

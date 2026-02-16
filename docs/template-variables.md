@@ -78,9 +78,9 @@ The editor provides intelligent suggestions as you type inside `{{...}}`:
 | `{{A8:` | `sequence`, `date`, `datetime` |
 | `{{varName:` | `string`, `number`, `boolean`, `date`, `datetime` |
 | `{{varName:date:` | `iso`, `YYYY-MM-DD`, `DD-MM-YYYY`, etc. |
-| `{{varName:string\|` | `upper`, `lower`, `3-50`, `opt`, `null`, etc. |
-| `{{varName:number\|` | `>0`, `>=0`, `int`, `rnd(2)`, `floor`, `ceil`, etc. |
-| `{{varName:date\|` | `+1d`, `-1d`, `+4h`, `+30m`, etc. |
+| <code>{{varName:string&#124;</code> | `upper`, `lower`, `3-50`, `opt`, `null`, etc. |
+| <code>{{varName:number&#124;</code> | `>0`, `>=0`, `int`, `rnd(2)`, `floor`, `ceil`, etc. |
+| <code>{{varName:date&#124;</code> | `+1d`, `-1d`, `+4h`, `+30m`, etc. |
 
 ### Syntax Highlighting
 
@@ -100,16 +100,6 @@ Variables are colour-coded in the editor so you can spot issues at a glance:
 ---
 
 ## Basic Templates
-
-### Variable Syntax
-
-Template variables use double-bracket notation:
-
-```
-{{variableName}}              — Simple variable (string type)
-{{variableName:type}}         — Variable with explicit type
-{{variableName:type|modifier}} — Variable with type and modifier(s)
-```
 
 ### Data Types
 
@@ -241,9 +231,9 @@ These control what happens when a value is empty or missing. They work with **al
 | Modifier | Syntax | What Happens When Empty |
 |----------|--------|------------------------|
 | *(default)* | `{{Name:string}}` | String → `""`, Number → `0` |
-| **opt** | `{{Code:string\|opt}}` | Entire key is **omitted** from JSON |
-| **null** | `{{Qty:number\|null}}` | Value is **null** in JSON |
-| **asString** | `{{Qty:number\|asString}}` | Number/boolean output as a JSON string (e.g. `"123"` instead of `123`) |
+| **opt** | <code>{{Code:string&#124;opt}}</code> | Entire key is **omitted** from JSON |
+| **null** | <code>{{Qty:number&#124;null}}</code> | Value is **null** in JSON |
+| **asString** | <code>{{Qty:number&#124;asString}}</code> | Number/boolean output as a JSON string (e.g. `"123"` instead of `123`) |
 
 #### The opt Modifier — Conditional Key Omission
 
@@ -290,12 +280,12 @@ Useful when your API expects string representations of numbers or booleans.
 |----------|--------|-------------|
 | Trim | *(default)* | Whitespace trimmed automatically |
 | No trim | `noTrim` | Preserve leading/trailing spaces |
-| Exact length | `n` | `{{Code:string\|3}}` — exactly 3 characters |
-| Min length | `n-` | `{{Name:string\|3-}}` — at least 3 characters |
-| Max length | `-n` | `{{Code:string\|-10}}` — at most 10 characters |
-| Range | `n-m` | `{{Desc:string\|5-100}}` — between 5 and 100 characters |
-| Uppercase | `upper` | `{{SKU:string\|upper}}` — converts to UPPERCASE |
-| Lowercase | `lower` | `{{Email:string\|lower}}` — converts to lowercase |
+| Exact length | `n` | <code>{{Code:string&#124;3}}</code> — exactly 3 characters |
+| Min length | `n-` | <code>{{Name:string&#124;3-}}</code> — at least 3 characters |
+| Max length | `-n` | <code>{{Code:string&#124;-10}}</code> — at most 10 characters |
+| Range | `n-m` | <code>{{Desc:string&#124;5-100}}</code> — between 5 and 100 characters |
+| Uppercase | `upper` | <code>{{SKU:string&#124;upper}}</code> — converts to UPPERCASE |
+| Lowercase | `lower` | <code>{{Email:string&#124;lower}}</code> — converts to lowercase |
 
 **Chaining example:** `{{SKU:string|5-10|upper}}` — validates length between 5-10 characters AND converts to uppercase.
 
@@ -303,14 +293,14 @@ Useful when your API expects string representations of numbers or booleans.
 
 | Modifier | Syntax | Description |
 |----------|--------|-------------|
-| Greater than | `>n` | `{{Qty:number\|>0}}` — must be > 0 |
-| Greater/equal | `>=n` | `{{Stock:number\|>=0}}` — must be >= 0 |
-| Less than | `<n` | `{{Discount:number\|<100}}` — must be < 100 |
-| Less/equal | `<=n` | `{{Pct:number\|<=100}}` — must be <= 100 |
-| Integer | `int` | `{{Count:number\|int}}` — whole numbers only |
-| Round | `rnd(n)` | `{{Price:number\|rnd(2)}}` — round to 2 decimal places |
-| Floor | `floor` | `{{Qty:number\|floor}}` — round down |
-| Ceil | `ceil` | `{{Qty:number\|ceil}}` — round up |
+| Greater than | `>n` | <code>{{Qty:number&#124;>0}}</code> — must be > 0 |
+| Greater/equal | `>=n` | <code>{{Stock:number&#124;>=0}}</code> — must be >= 0 |
+| Less than | `<n` | <code>{{Discount:number&#124;<100}}</code> — must be < 100 |
+| Less/equal | `<=n` | <code>{{Pct:number&#124;<=100}}</code> — must be <= 100 |
+| Integer | `int` | <code>{{Count:number&#124;int}}</code> — whole numbers only |
+| Round | `rnd(n)` | <code>{{Price:number&#124;rnd(2)}}</code> — round to 2 decimal places |
+| Floor | `floor` | <code>{{Qty:number&#124;floor}}</code> — round down |
+| Ceil | `ceil` | <code>{{Qty:number&#124;ceil}}</code> — round up |
 
 **Chaining example:** `{{Price:number|>=0|rnd(2)}}` — must be non-negative AND rounded to 2 decimals.
 
@@ -429,7 +419,7 @@ This template:
 
 Quick reference for how empty values are handled across all types:
 
-| Type | Default | With `\|opt` | With `\|null` |
+| Type | Default | With <code>&#124;opt</code> | With <code>&#124;null</code> |
 |------|---------|-------------|---------------|
 | string | `""` | Key omitted | `null` |
 | number | `0` | Key omitted | `null` |

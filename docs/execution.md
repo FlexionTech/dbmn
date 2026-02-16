@@ -43,7 +43,7 @@ Execute a single API request to test configuration, verify responses, or perform
    - Validate request body JSON syntax
 
 2. **Variable Substitution**
-   - Resolve all `{% raw %}{{variables}}{% endraw %}` in URL, headers, body
+   - Resolve all `{{variables}}` in URL, headers, body
    - Apply default values where specified
    - Type conversion (string, number, boolean)
 
@@ -65,8 +65,8 @@ For single executions with template variables:
 **Option 1: Use default values**
 ```json
 {
-  "sku": "{% raw %}{{item_id:PRE-TEST-001}}{% endraw %}",
-  "quantity": "{% raw %}{{qty:10}}{% endraw %}"
+  "sku": "{{item_id:PRE-TEST-001}}",
+  "quantity": "{{qty:10}}"
 }
 ```
 Default values are used when no CSV is loaded.

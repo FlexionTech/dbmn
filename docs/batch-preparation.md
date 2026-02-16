@@ -110,11 +110,11 @@ Map CSV columns to template variables in your endpoint configuration.
 
 Dobermann automatically maps columns when:
 - Column name exactly matches a template variable
-- Example: CSV column `sku` maps to template variable `{% raw %}{{sku}}{% endraw %}`
+- Example: CSV column `sku` maps to template variable `{{sku}}`
 
 **Case sensitivity:**
 - Mapping is case-insensitive
-- `SKU`, `sku`, `Sku` all map to `{% raw %}{{sku}}{% endraw %}`
+- `SKU`, `sku`, `Sku` all map to `{{sku}}`
 
 ### Manual Mapping
 
@@ -129,10 +129,10 @@ For columns that don't auto-map:
 ```
 Template Variable    | CSV Column
 ---------------------|-------------
-{% raw %}{{item_id}}{% endraw %}         | sku
-{% raw %}{{item_desc}}{% endraw %}       | description
-{% raw %}{{qty}}{% endraw %}             | quantity
-{% raw %}{{location}}{% endraw %}        | warehouse
+{{item_id}}         | sku
+{{item_desc}}       | description
+{{qty}}             | quantity
+{{location}}        | warehouse
 ```
 
 ### Mapping Validation
@@ -197,7 +197,7 @@ Configure how to handle empty/null values:
 
 **Use default value:**
 - Specify fallback value in template
-- Example: `{% raw %}{{quantity:100}}{% endraw %}` defaults to 100
+- Example: `{{quantity:100}}` defaults to 100
 
 **Send empty string:**
 - Empty CSV cell becomes empty string in request
@@ -374,14 +374,14 @@ Specify data types in template variables for validation:
 **String (default):**
 ```json
 {
-  "sku": "{% raw %}{{sku}}{% endraw %}"
+  "sku": "{{sku}}"
 }
 ```
 
 **Number:**
 ```json
 {
-  "quantity": "{% raw %}{{quantity:number}}{% endraw %}"
+  "quantity": "{{quantity:number}}"
 }
 ```
 - CSV value converted to number
@@ -390,7 +390,7 @@ Specify data types in template variables for validation:
 **Boolean:**
 ```json
 {
-  "active": "{% raw %}{{is_active:boolean}}{% endraw %}"
+  "active": "{{is_active:boolean}}"
 }
 ```
 - `true`, `1`, `yes` become true
@@ -402,7 +402,7 @@ Specify data types in template variables for validation:
 {
   "items": [
     {
-      "id": "{% raw %}{{sku}}{% endraw %}"
+      "id": "{{sku}}"
     }
   ]
 }
@@ -412,11 +412,11 @@ Specify data types in template variables for validation:
 
 ### Pagination Support (A8:PAGE)
 
-For APIs supporting pagination, use the special `{% raw %}{{A8:PAGE}}{% endraw %}` variable:
+For APIs supporting pagination, use the special `{{A8:PAGE}}` variable:
 
 **In endpoint URL or query parameters:**
 ```
-/api/items?page={% raw %}{{A8:PAGE}}{% endraw %}&limit=100
+/api/items?page={{A8:PAGE}}&limit=100
 ```
 
 **Behavior:**
@@ -486,7 +486,7 @@ For APIs supporting pagination, use the special `{% raw %}{{A8:PAGE}}{% endraw %
 
 ### Variables Not Substituting
 
-**Symptoms:** Template variables appear literally in request (e.g., `{% raw %}{{sku}}{% endraw %}` in JSON)
+**Symptoms:** Template variables appear literally in request (e.g., `{{sku}}` in JSON)
 
 **Causes:**
 - Variable not mapped to CSV column

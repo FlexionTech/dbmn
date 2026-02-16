@@ -37,7 +37,7 @@ Endpoints are API request configurations including HTTP method, URL path, query 
 
 ### Template Variables
 
-Template variables use `{% raw %}{{variableName}}{% endraw %}` syntax to create dynamic requests. Variables work in URL paths, query parameters, headers, and request bodies. For batch execution, CSV columns map to template variables.
+Template variables use `{{variableName}}` syntax to create dynamic requests. Variables work in URL paths, query parameters, headers, and request bodies. For batch execution, CSV columns map to template variables.
 
 ### Transactions
 
@@ -76,9 +76,9 @@ Follow this complete workflow to execute your first API request.
 **Example request body:**
 ```json
 {
-    "orderId": "{% raw %}{{orderId:number}}{% endraw %}",
-    "customerName": "{% raw %}{{customerName:string}}{% endraw %}",
-    "quantity": "{% raw %}{{quantity:number}}{% endraw %}"
+    "orderId": "{{orderId:number}}",
+    "customerName": "{{customerName:string}}",
+    "quantity": "{{quantity:number}}"
 }
 ```
 

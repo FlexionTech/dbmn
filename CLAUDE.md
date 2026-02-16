@@ -2,7 +2,7 @@
 
 ## Overview
 Public website, documentation, and blog for Dobermann (https://dbmn.io).
-Built with Jekyll + just-the-docs theme. Deployed via GitHub Pages on push to main.
+Built with Jekyll + just-the-docs theme. Deployed via GitHub Actions on push to main.
 
 ## Structure
 - `index.html` — Landing page (custom HTML, not processed by Jekyll theme)
@@ -14,6 +14,8 @@ Built with Jekyll + just-the-docs theme. Deployed via GitHub Pages on push to ma
 - `images/` — Site images and logos
 - `_config.yml` — Jekyll configuration
 - `.github/ISSUE_TEMPLATE/` — Public issue templates
+- `.github/workflows/deploy-pages.yml` — GitHub Actions deployment workflow
+- `scripts/escape-templates.sh` — Auto-escapes `{{}}` in docs for Jekyll
 
 ## Adding a New Doc Page
 1. Create `docs/page-name.md` with front matter:
@@ -38,6 +40,17 @@ Built with Jekyll + just-the-docs theme. Deployed via GitHub Pages on push to ma
    ```
 2. Commit and push — auto-deploys
 
+## Template Variable Syntax in Docs
+Dobermann uses `{{variable}}` syntax which clashes with Jekyll's Liquid templating.
+This is handled automatically — **write docs with `{{}}` naturally**, no escaping needed.
+
+The GitHub Actions workflow runs `scripts/escape-templates.sh` before Jekyll builds,
+which wraps all `{{...}}` in `{% raw %}...{% endraw %}` tags automatically.
+Source files in the repo stay clean and readable.
+
+**Important:** This only processes `docs/*.md` files. Blog posts and `index.html`
+may use real Liquid syntax (e.g. `{{ post.title }}`) and are not escaped.
+
 ## Key Rules
 - This is the single source of truth for user-facing documentation
 - The private repo (vs_active_8) contains internal dev docs only
@@ -45,3 +58,4 @@ Built with Jekyll + just-the-docs theme. Deployed via GitHub Pages on push to ma
 - Changelog entries go in `docs/changelog.md`
 - Do not add internal development documentation here (devNotes, requirements, bugFixes)
 - Blog posts go in `_posts/` — use for release announcements, tips, use cases
+- Write `{{variable}}` naturally in docs — the build pipeline escapes them automatically

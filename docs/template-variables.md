@@ -22,7 +22,6 @@ The fastest way to build templates is with the **body editor toolbar** — no ne
 
 Place your cursor on any JSON key-value line and press **Ctrl+M** (or Cmd+M on Mac). Dobermann cycles through four states:
 
-{% raw %}
 **State 1 → Input Variable:**
 ```json
 "quantity": 100
@@ -50,17 +49,13 @@ Same behaviour — autocomplete suggests `sequence`, `date`, `datetime`.
 "quantity": 100
 ```
 Back to the original value from the comment. Cycle too far? Just press Ctrl+Z to undo.
-{% endraw %}
 
 ### Ctrl+Shift+M — Insert Variable Brackets
 
-{% raw %}
 Press **Ctrl+Shift+M** to insert `{{}}` at the cursor position. If the cursor is already inside a variable, it removes the entire `{{...}}` instead. Autocomplete triggers immediately after insertion.
-{% endraw %}
 
 ### Modifier Toolbar
 
-{% raw %}
 When your cursor is inside a variable like `{{sku:string}}`, the **Modifier** dropdown becomes active. It shows context-aware options based on the variable's data type:
 
 - **String variables:** `upper`, `lower`, length range (`3-50`), `noTrim`
@@ -72,11 +67,9 @@ Click a modifier and it's inserted before the closing `}}`:
 ```
 {{sku:string}}  →  {{sku:string|upper}}
 ```
-{% endraw %}
 
 ### Autocomplete
 
-{% raw %}
 The editor provides intelligent suggestions as you type inside `{{...}}`:
 
 | You type | Suggestions shown |
@@ -88,7 +81,6 @@ The editor provides intelligent suggestions as you type inside `{{...}}`:
 | `{{varName:string\|` | `upper`, `lower`, `3-50`, `opt`, `null`, etc. |
 | `{{varName:number\|` | `>0`, `>=0`, `int`, `rnd(2)`, `floor`, `ceil`, etc. |
 | `{{varName:date\|` | `+1d`, `-1d`, `+4h`, `+30m`, etc. |
-{% endraw %}
 
 ### Syntax Highlighting
 
@@ -96,7 +88,7 @@ Variables are colour-coded in the editor so you can spot issues at a glance:
 
 | Element | Colour |
 |---------|--------|
-| {% raw %}`{{ }}`{% endraw %} brackets | Dim grey |
+| `{{ }}` brackets | Dim grey |
 | User variables | Cyan/Blue |
 | A8 and ENV prefixes | Green |
 | Data types | Blue |
@@ -109,7 +101,6 @@ Variables are colour-coded in the editor so you can spot issues at a glance:
 
 ## Basic Templates
 
-{% raw %}
 ### Variable Syntax
 
 Template variables use double-bracket notation:
@@ -150,24 +141,20 @@ String is the default — `{{Name}}` is the same as `{{Name:string}}`.
 ```
 
 When you run a batch, Dobermann maps each source data column to a variable, validates the values against the declared types, and generates one API request per row — with numbers as real numbers, booleans as real booleans, and dates in the right format.
-{% endraw %}
 
 ### Where Variables Work
 
-{% raw %}
 | Location | Example | Encoding |
 |----------|---------|----------|
 | **Request Body** | `"itemId": "{{sku:string}}"` | As-is (no encoding) |
 | **URL Path** | `/api/orders/{{orderId}}/status` | Automatically URL-encoded |
 | **Query Parameters** | `limit={{maxResults:number}}` | Automatically URL-encoded |
 | **Headers** | `Authorization: Bearer {{token}}` | As-is (no encoding) |
-{% endraw %}
 
 ---
 
 ## Environment Variables (ENV)
 
-{% raw %}
 Reference values from your active environment using the `ENV:` prefix:
 
 ```json
@@ -177,7 +164,6 @@ Reference values from your active environment using the `ENV:` prefix:
     "warehouse": "{{ENV:warehouse}}"
 }
 ```
-{% endraw %}
 
 **Key behaviours:**
 - ENV variables are **not** prompted during Run API
@@ -191,7 +177,6 @@ Set environment variables in your Environment settings (Environments tree → se
 
 ## Automatic Variables (A8)
 
-{% raw %}
 System-generated values computed at execution time. You're never prompted for these — they just work.
 
 | Variable | Output | Description |
@@ -236,7 +221,6 @@ When templates have nested arrays, control how sequences behave:
     ]
 }
 ```
-{% endraw %}
 
 ---
 
@@ -244,19 +228,16 @@ When templates have nested arrays, control how sequences behave:
 
 Modifiers are where things get powerful. Chain them with the pipe (`|`) character to validate, transform, and control how values are processed — **before** the API request is sent.
 
-{% raw %}
 **Syntax:** `{{variableName:type|modifier1|modifier2|modifier3}}`
 
 **Key rule:**
 - **Colon (`:`)** = FORMAT (dates only): `{{Date:date:iso}}`
 - **Pipe (`|`)** = MODIFIER (all types): `{{Name:string|upper}}`
-{% endraw %}
 
 ### Empty Value Modifiers
 
 These control what happens when a value is empty or missing. They work with **all** data types.
 
-{% raw %}
 | Modifier | Syntax | What Happens When Empty |
 |----------|--------|------------------------|
 | *(default)* | `{{Name:string}}` | String → `""`, Number → `0` |
@@ -300,13 +281,11 @@ Forces the output as a JSON string, regardless of type:
 {{Flag:boolean|asString}}    → true outputs as "true"
 {{A8:sequence|asString}}     → 1001 outputs as "1001"
 ```
-{% endraw %}
 
 Useful when your API expects string representations of numbers or booleans.
 
 ### String Modifiers
 
-{% raw %}
 | Modifier | Syntax | Description |
 |----------|--------|-------------|
 | Trim | *(default)* | Whitespace trimmed automatically |
@@ -317,13 +296,11 @@ Useful when your API expects string representations of numbers or booleans.
 | Range | `n-m` | `{{Desc:string\|5-100}}` — between 5 and 100 characters |
 | Uppercase | `upper` | `{{SKU:string\|upper}}` — converts to UPPERCASE |
 | Lowercase | `lower` | `{{Email:string\|lower}}` — converts to lowercase |
-{% endraw %}
 
-**Chaining example:** {% raw %}`{{SKU:string|5-10|upper}}`{% endraw %} — validates length between 5-10 characters AND converts to uppercase.
+**Chaining example:** `{{SKU:string|5-10|upper}}` — validates length between 5-10 characters AND converts to uppercase.
 
 ### Number Modifiers
 
-{% raw %}
 | Modifier | Syntax | Description |
 |----------|--------|-------------|
 | Greater than | `>n` | `{{Qty:number\|>0}}` — must be > 0 |
@@ -334,13 +311,11 @@ Useful when your API expects string representations of numbers or booleans.
 | Round | `rnd(n)` | `{{Price:number\|rnd(2)}}` — round to 2 decimal places |
 | Floor | `floor` | `{{Qty:number\|floor}}` — round down |
 | Ceil | `ceil` | `{{Qty:number\|ceil}}` — round up |
-{% endraw %}
 
-**Chaining example:** {% raw %}`{{Price:number|>=0|rnd(2)}}`{% endraw %} — must be non-negative AND rounded to 2 decimals.
+**Chaining example:** `{{Price:number|>=0|rnd(2)}}` — must be non-negative AND rounded to 2 decimals.
 
 ### Date/DateTime Format Modifiers
 
-{% raw %}
 Control the output format of date and datetime values using the colon syntax:
 
 **Date formats:**
@@ -362,13 +337,11 @@ Control the output format of date and datetime values using the colon syntax:
 | `{{COL:datetime:date}}` | `2024-01-04` | Date portion only |
 | `{{COL:datetime:time}}` | `14:30:00` | Time portion only |
 | `{{COL:datetime:HH:mm}}` | `14:30` | Custom time format |
-{% endraw %}
 
 **Format tokens:** `YYYY` (year), `YY` (2-digit year), `MM` (month), `DD` (day), `HH` (24h hour), `hh` (12h hour), `mm` (minutes), `ss` (seconds), `A` (AM/PM).
 
 ### Date Math Modifiers
 
-{% raw %}
 Add or subtract time from date values — works with both CSV dates and A8 system variables:
 
 | Unit | Example | Description |
@@ -389,7 +362,6 @@ Add or subtract time from date values — works with both CSV dates and A8 syste
 {{OrderDate:date:DD-MM-YYYY|+30d}} — Custom format plus 30 days
 {{Reminder:datetime|+30m}}         — Current time plus 30 minutes
 ```
-{% endraw %}
 
 ### Modifier Execution Order
 
@@ -400,9 +372,7 @@ When multiple modifiers are chained, they execute in a fixed order (regardless o
 3. **Post-transform** — Type-specific: rnd, floor, ceil, date math
 4. **Validate** — Check constraints: length ranges, comparisons, int
 
-{% raw %}
 This means `{{Price:number|rnd(2)|>0}}` and `{{Price:number|>0|rnd(2)}}` produce identical results.
-{% endraw %}
 
 ### Validation Behaviour
 
@@ -411,14 +381,12 @@ Modifiers validate data **before** API execution:
 - **Run API mode:** Validation errors shown inline before the request fires
 - **Run Batch mode:** All rows validated after column mapping — execution is blocked if any row fails, with clear error messages showing which rows have problems
 
-{% raw %}
 **Example validation errors:**
 ```
 Row 15: Variable 'Name' value 'AB' failed validation: minimum length is 3 characters
 Row 23: Variable 'Amount' value '-5' failed validation: must be greater than 0
 Row 47: Variable 'Qty' value '3.14' failed validation: must be an integer
 ```
-{% endraw %}
 
 ---
 
@@ -426,7 +394,6 @@ Row 47: Variable 'Qty' value '3.14' failed validation: must be an integer
 
 Putting it all together — a template that validates, transforms, and handles missing data:
 
-{% raw %}
 ```json
 {
     "Data": [
@@ -445,7 +412,6 @@ Putting it all together — a template that validates, transforms, and handles m
     ]
 }
 ```
-{% endraw %}
 
 This template:
 - Validates ItemId is 5-50 characters and forces uppercase
@@ -463,7 +429,6 @@ This template:
 
 Quick reference for how empty values are handled across all types:
 
-{% raw %}
 | Type | Default | With `\|opt` | With `\|null` |
 |------|---------|-------------|---------------|
 | string | `""` | Key omitted | `null` |
@@ -471,7 +436,6 @@ Quick reference for how empty values are handled across all types:
 | boolean | Error | Key omitted | `null` |
 | date | Error | Key omitted | `null` |
 | datetime | Error | Key omitted | `null` |
-{% endraw %}
 
 ---
 
@@ -481,7 +445,6 @@ Quick reference for how empty values are handled across all types:
 {: .note }
 > Shorthand is a convenience for simple templates. For most use cases, the **Ctrl+M** toolbar workflow is faster and less error-prone.
 
-{% raw %}
 In JSON request bodies, you can use empty brackets `{{}}` where the JSON key name becomes the variable name automatically:
 
 ```json
@@ -491,7 +454,6 @@ In JSON request bodies, you can use empty brackets `{{}}` where the JSON key nam
     "IsActive": "{{:boolean}}"  // Equivalent to: {{IsActive:boolean}}
 }
 ```
-{% endraw %}
 
 **Limitations:**
 - Only works in JSON body templates (not URL, query params, or headers)

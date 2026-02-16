@@ -54,12 +54,10 @@ Right-click an endpoint and select **Delete Endpoint**. Dobermann shows the numb
 
 The URL path is appended to your environment's base URL when running requests. Template variables are fully supported for dynamic paths.
 
-{% raw %}
 **Examples:**
 - `/api/orders/{{orderId}}/status`
 - `/api/users/{{userId:number}}/profile`
 - `/api/products/{{category}}/{{productId}}/details`
-{% endraw %}
 
 A link icon appears in the URL field when template variables are detected.
 
@@ -79,12 +77,10 @@ Add headers as key-value pairs. Each header has:
 - **Template variable support** — use variables in header values
 - A link icon appears when a header contains template variables
 
-{% raw %}
 **Examples:**
 - `Authorization`: `Bearer {{authToken:string}}`
 - `X-User-ID`: `{{userId:number}}`
 - `X-Request-ID`: `REQ-{{requestId}}`
-{% endraw %}
 
 ### Environment-Level Headers
 
@@ -97,20 +93,16 @@ Toggle **Include environment-level headers** to inherit headers from your active
 
 Key-value pairs appended to the URL. Each parameter supports enable/disable toggling and template variables.
 
-{% raw %}
 **Examples:**
 - `itemId`: `PRE-{{sku}}`
 - `limit`: `{{maxResults:number}}`
 - `includeActive`: `{{isActive:boolean}}`
-{% endraw %}
 
 ### Pagination with A8:PAGE
 
-{% raw %}
 Use `{{A8:PAGE}}` in a query parameter to enable automatic page iteration during batch execution. Dobermann increments the page number and continues until no more results are returned.
-{% endraw %}
 
-**Example:** Parameter `page`, Value: {% raw %}`{{A8:PAGE}}`{% endraw %}
+**Example:** Parameter `page`, Value: `{{A8:PAGE}}`
 
 ### Query Parameter Repetition
 
@@ -118,13 +110,11 @@ Combine multiple source data values into a single GET request — useful for API
 
 **Syntax:** `pattern[ separator ]`
 
-{% raw %}
 | Pattern | Result |
 |---------|--------|
 | `ItemId={{ITEM}}[ or ]` | `ItemId=val1 or ItemId=val2 or ItemId=val3` |
 | `ItemId={{ITEM}}[&]` | `ItemId=val1&ItemId=val2&ItemId=val3` |
 | `status={{STATUS}}[,]` | `status=active,status=pending` |
-{% endraw %}
 
 - Pattern comes before the brackets
 - Separator goes inside `[]` — spaces are preserved (`[ or ]` vs `[or]`)
@@ -137,29 +127,12 @@ Dobermann automatically splits into multiple requests if URL length or value cou
 ## Request Body
 {: #request-body }
 
-The JSON payload sent to your API. Dobermann provides a full-featured editor with template variable support, syntax highlighting, and a toolbar to speed up authoring.
+The JSON payload sent to your API. Dobermann provides a full-featured editor with syntax highlighting, autocomplete, and a toolbar for rapid template authoring.
 
 - **Always shown** for POST, PUT, PATCH methods
 - **Hidden by default** for GET and DELETE (shown if body has content or you explicitly add it)
-- An info banner reminds you that request body is not sent for GET/DELETE methods
 
-{% raw %}
-**Example template:**
-```json
-{
-    "Data": [
-        {
-            "ItemId": "PRE-{{sku:string}}",
-            "Quantity": "{{quantity:number}}",
-            "IsActive": "{{activeFlag:boolean}}",
-            "LoadDate": "{{loadDate:date}}"
-        }
-    ]
-}
-```
-{% endraw %}
-
-For the full template variable reference including types, modifiers, and the editing experience, see [Template Variables](template-variables).
+Use [Template Variables](template-variables) to map your spreadsheet columns to API fields — with type validation, data transformation, and conditional logic built right in.
 
 ### Editor Toolbar
 
@@ -168,7 +141,7 @@ The toolbar above the editor provides quick access to template authoring feature
 | Button | Shortcut | What it does |
 |--------|----------|------------|
 | **Line Variable** | Ctrl+M | Cycle a JSON line through 4 states: regular value → Input variable → ENV variable → A8 variable → restore original |
-| **Insert Var** | Ctrl+Shift+M | {% raw %}Toggle `{{}}` brackets at cursor position{% endraw %} |
+| **Insert Var** | Ctrl+Shift+M | Toggle `{{}}` brackets at cursor position |
 | **Modifier** | — | Add type-aware modifiers (shows different options for string, number, date, etc.) |
 | **Encode** | — | Toggle BASE64 encoding on a key (`"key"` → `"key:BASE64"`) |
 | **Comment** | Ctrl+/ | Toggle line comments (supports multi-line selection) |
@@ -176,15 +149,7 @@ The toolbar above the editor provides quick access to template authoring feature
 | **Undo / Redo** | Ctrl+Z / Ctrl+Shift+Z | Standard undo/redo |
 | **Format JSON** | — | Pretty-print the JSON body |
 
-### Autocomplete
-
-{% raw %}
-The editor provides intelligent suggestions as you type:
-- Type `{{` — suggests `A8:` and `ENV:` prefixes
-- Type `{{A8:` — shows available auto-variables: `sequence`, `date`, `datetime`
-- Type `{{varName:` — shows data types: `string`, `number`, `boolean`, `date`, `datetime`
-- Type `{{varName:type|` — shows applicable modifiers for that type
-{% endraw %}
+The editor also provides **intelligent autocomplete** as you type inside template variables — suggesting variable types, modifiers, and environment variables. See [Template Variables](template-variables) for the full editing experience.
 
 ---
 
@@ -200,7 +165,6 @@ The **Share** button is one of Dobermann's best features. Click it and your enti
 
 **What gets copied (plain text format):**
 
-{% raw %}
 ```
 // Name: Create Order
 // Method: POST
@@ -222,7 +186,6 @@ The **Share** button is one of Dobermann's best features. Click it and your enti
   "orderDate": "{{createdDate:date|+1d}}"
 }
 ```
-{% endraw %}
 
 **How it looks in Teams / Outlook:**
 
@@ -286,7 +249,7 @@ Click **More Actions** → **Duplicate** to create a copy of any saved endpoint.
 |----------|--------|
 | Ctrl+S | Save endpoint |
 | Ctrl+M | Cycle line variable (4 states) |
-| Ctrl+Shift+M | {% raw %}Insert/remove `{{}}` at cursor{% endraw %} |
+| Ctrl+Shift+M | Insert/remove `{{}}` at cursor |
 | Ctrl+/ | Toggle line comment |
 | Ctrl+D | Delete line |
 | Ctrl+Z | Undo |

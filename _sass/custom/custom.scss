@@ -1,0 +1,12 @@
+// Cooper Black heading font for site title
+.site-title {
+  font-family: 'Cooper Black', Georgia, serif;
+  gap: $sp-3;
+}
+
+// Fix logo + title layout: logo was width:100%, pushing text out
+.site-logo {
+  width: 2rem;
+  height: 2rem;
+  flex-shrink: 0;
+}

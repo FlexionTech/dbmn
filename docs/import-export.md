@@ -38,13 +38,12 @@ You can import and export:
 - Headers (custom and organization)
 - Query parameters
 - Request body template
-- Test scripts
 - Variable definitions
 
 **Excluded:**
 - Environment association
 - Execution history
-- CSV files
+- Data files
 - Authentication tokens
 
 ### Export Folder

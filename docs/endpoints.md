@@ -158,9 +158,9 @@ The editor also provides **intelligent autocomplete** as you type inside templat
 
 ### Share Button — Copy Endpoint to Clipboard
 
-The **Share** button is one of Dobermann's best features. Click it and your entire endpoint configuration is copied to the clipboard in **two formats simultaneously**:
+The **Share** button is one of Dobermann's killer features. One click copies your entire endpoint configuration to the clipboard in **two formats simultaneously**:
 
-1. **Rich HTML** — renders beautifully in Microsoft Teams, Outlook, Confluence, and any rich-text editor
+1. **Rich HTML** — renders beautifully when pasted into Microsoft Teams, Outlook, Confluence, and any rich-text editor
 2. **Plain text (JSONC)** — structured comments with metadata, headers, params, and the full body
 
 **What gets copied (plain text format):**
@@ -189,11 +189,17 @@ The **Share** button is one of Dobermann's best features. Click it and your enti
 
 **How it looks in Teams / Outlook:**
 
-A blue header bar reading **DBMN Endpoint**, followed by a formatted code block with your full endpoint configuration, and a footer link back to dbmn.io.
+A styled header bar reading **DBMN Endpoint**, followed by a formatted code block with your full endpoint configuration, and a footer link back to dbmn.io. Your colleagues see the endpoint exactly as configured — method, path, headers, body, and all.
 
 **How it looks in Confluence:**
 
-The same styled block renders as a clean code section — paste it straight into a wiki page and your team can see exactly what the endpoint does.
+The same styled block renders as a clean code section — paste it straight into a wiki page and your team can see exactly what the endpoint does. No reformatting needed.
+
+**Why this matters:**
+
+- Stop copying JSON snippets into Slack and hoping people understand the context
+- New team members can see the exact request shape with variable types and modifiers
+- Shared endpoints become living documentation that stays in sync with your actual configuration
 
 ### Paste Button — Create from Shared
 
@@ -211,6 +217,15 @@ The Paste button only appears on new, unsaved endpoints.
 ### Duplicate Endpoint
 
 Click **More Actions** → **Duplicate** to create a copy of any saved endpoint. The duplicate gets a "COPY " prefix and opens as a new unsaved endpoint — modify and save to create your variation.
+
+Perfect for creating endpoint variants (e.g., "Create Order" → "Create Order (Bulk)") without starting from scratch.
+
+---
+
+## Test Scripts
+
+{: .note }
+> Test scripts are under development and will be documented here when available. Stay tuned.
 
 ---
 
@@ -247,6 +262,6 @@ Click **More Actions** → **Duplicate** to create a copy of any saved endpoint.
 
 - [Template Variables](template-variables) — Full variable syntax, types, modifiers, and editing features
 - [Environments](environments) — Manage API connections and authentication
-- [Batch Preparation](batch-preparation) — Loading data and column mapping
+- [Batch Preparation](batch-preparation) — Data loading and column mapping
 - [Import/Export](import-export) — Share configurations with your team
 - [Keyboard Shortcuts](shortcuts) — All keyboard shortcuts including editor shortcuts

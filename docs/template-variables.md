@@ -105,7 +105,7 @@ Variables are colour-coded in the editor so you can spot issues at a glance:
 
 Specify a type after the colon to enable validation and proper JSON output:
 
-| Type | Syntax | CSV Input Examples | JSON Output |
+| Type | Syntax | Input Examples | JSON Output |
 |------|--------|--------------------|-------------|
 | **string** | `{{Name:string}}` | Any text | `"Hello"` |
 | **number** | `{{Qty:number}}` | `123`, `45.67`, `-5` | `123` (unquoted) |
@@ -332,7 +332,7 @@ Control the output format of date and datetime values using the colon syntax:
 
 ### Date Math Modifiers
 
-Add or subtract time from date values — works with both CSV dates and A8 system variables:
+Add or subtract time from date values — works with both source data dates and A8 system variables:
 
 | Unit | Example | Description |
 |------|---------|-------------|

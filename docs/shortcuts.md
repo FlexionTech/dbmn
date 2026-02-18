@@ -38,7 +38,7 @@ You can execute batch requests entirely with the keyboard:
 2. **Search endpoint:** Type endpoint name
 3. **Select endpoint:** `Enter`
 4. **Choose Batch:** Arrow down, `Enter`
-5. **Upload CSV:** `Tab` to file input, `Enter`, select file
+5. **Load data:** `Tab` to file input, `Enter`, select file
 6. **Map columns:** `Tab` through dropdowns, `Enter` to select
 7. **Execute:** `Tab` to "Run Batch" button, `Enter`
 

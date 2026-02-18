@@ -82,7 +82,7 @@ This guide covers common issues, error messages, and solutions for Dobermann. Is
 **Variable not mapped:**
 - Load CSV file
 - Open column mapping interface
-- Map each variable to CSV column
+- Map each variable to a data column
 - Verify green checkmarks appear
 
 **Variable name mismatch:**
@@ -185,17 +185,17 @@ Dobermann auto-encodes query parameters and path variables. For special cases, p
 
 **Check:**
 - Verify column mapping is correct
-- Check CSV column names match
+- Check column names match
 - Look for extra spaces in headers
 - Ensure consistent delimiter
 - Verify UTF-8 encoding
 
-## CSV and Data Issues
+## Data File Issues
 
-### CSV File Won't Load
+### File Won't Load
 
 **Check:**
-- Must be `.csv` or `.txt` extension
+- Must be `.xlsx`, `.xls`, `.csv`, or `.txt` extension
 - UTF-8 encoding recommended
 - Header row required
 - Consistent delimiter (comma, tab, semicolon)
@@ -223,9 +223,9 @@ Dobermann auto-encodes query parameters and path variables. For special cases, p
 - Numbers may lose leading zeros
 - Use "Save As" -> "CSV UTF-8"
 
-## Report and Results
+## Console and Results
 
-### Report Not Opening
+### Console Not Opening
 
 **Solutions:**
 1. Check VS Code output panel
@@ -339,6 +339,5 @@ When reporting issues, include:
 
 - [Environments](environments) - Authentication and connection setup
 - [Endpoints](endpoints) - API configuration
-- [Execution](execution) - Running requests
+- [Console](console) - Running requests and analysing results
 - [Batch Preparation](batch-preparation) - CSV and variable mapping
-- [Viewing Results](viewing-results) - Analyzing outcomes

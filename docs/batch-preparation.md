@@ -7,38 +7,40 @@ parent: Documentation
 
 # Batch Preparation
 
-Batch execution allows you to run the same API endpoint multiple times with different data from a CSV file. This is essential for bulk operations like creating multiple items, updating locations, or processing large datasets.
+Batch execution allows you to run the same API endpoint multiple times with different data. Enter values directly in the data grid, or load an Excel/CSV file. This is essential for bulk operations like creating multiple items, updating locations, or processing large datasets.
 
 ## Overview
 
 Batch preparation involves:
-- **CSV file selection** - Choose data source
-- **Column mapping** - Map CSV columns to template variables
-- **Configuration** - Set batch parameters and error tolerance
-- **Validation** - Verify mapping and data before execution
+- **Data loading** — Enter data in the grid or load an Excel/CSV file
+- **Column mapping** — Map source data columns to template variables
+- **Configuration** — Set batch parameters and error tolerance
+- **Validation** — Verify mapping and data before execution
 
-## Loading CSV Data
+## Loading Data
+{: #loading-csv-data }
 
-### Selecting a CSV File
+### Selecting a Data File
 
 **Method 1: File Browser**
-1. Click **Load CSV File** button in endpoint webview
+1. Click **Load File** button in endpoint webview
 2. Navigate to your CSV file
 3. Click **Open**
 
 **Method 2: Drag & Drop**
-1. Drag CSV file from file explorer
-2. Drop onto the CSV upload area
+1. Drag your data file from the file explorer
+2. Drop onto the upload area
 3. File loads automatically
 
 **Supported formats:**
-- `.csv` - Comma-separated values
-- `.txt` - Tab or comma-separated
+- `.xlsx` / `.xls` — Excel workbooks
+- `.csv` — Comma-separated values
+- `.txt` — Tab or comma-separated
 - Character encoding: UTF-8 (recommended), ASCII
 
 ### Manual Data Entry (Grid)
 
-For quick data entry without creating a CSV file, use the built-in data entry grid:
+For quick data entry without creating a file, use the built-in data entry grid:
 
 1. Click **Run Batch** on an endpoint with template variables
 2. Select the **Manual Entry** tab
@@ -68,7 +70,7 @@ A hint appears to guide you through the progressive copy levels.
 
 See [Keyboard Shortcuts](shortcuts#grid-data-entry-shortcuts) for detailed information.
 
-### CSV Requirements
+### File Requirements
 
 **Header row:**
 - First row must contain column names
@@ -103,14 +105,15 @@ After loading, Dobermann displays:
 - Special characters display properly
 
 ## Column Mapping
+{: #column-mapping }
 
-Map CSV columns to template variables in your endpoint configuration.
+Map source data columns to template variables in your endpoint configuration.
 
 ### Automatic Mapping
 
 Dobermann automatically maps columns when:
 - Column name exactly matches a template variable
-- Example: CSV column `sku` maps to template variable `{{sku}}`
+- Example: Column `sku` maps to template variable `{{sku}}`
 
 **Case sensitivity:**
 - Mapping is case-insensitive
@@ -122,12 +125,12 @@ For columns that don't auto-map:
 
 1. Find unmapped variable in the mapping interface
 2. Click the dropdown next to the variable name
-3. Select the corresponding CSV column
+3. Select the corresponding source data column
 4. Mapping is saved automatically
 
 **Example:**
 ```
-Template Variable    | CSV Column
+Template Variable    | Source Column
 ---------------------|-------------
 {{item_id}}         | sku
 {{item_desc}}       | description
@@ -142,16 +145,16 @@ Dobermann validates your mapping:
 **Valid:**
 - All required variables are mapped
 - No duplicate mappings
-- Column names exist in CSV
+- Column names exist in source data
 
 **Invalid:**
 - Required variable unmapped (red indicator)
 - Multiple variables map to same column (warning)
-- Mapped column doesn't exist in CSV (error)
+- Mapped column doesn't exist in source data (error)
 
 ### Source Format Configuration
 
-The **Source Format** column in the mapping table lets you specify how CSV values should be interpreted before conversion.
+The **Source Format** column in the mapping table lets you specify how source values should be interpreted before conversion.
 
 **Number Formats:**
 
@@ -267,7 +270,7 @@ Result: [row1, row2, row3, row1, row2, row3] (stops after 2 cycles)
 ### Running the Batch
 
 1. Ensure endpoint is saved with all template variables
-2. Load CSV file
+2. Load data (grid entry or file upload)
 3. Verify column mapping (all green checkmarks)
 4. Configure error tolerance if needed
 5. Click **Run Batch**
@@ -312,21 +315,21 @@ After configuring a batch in the endpoint webview, the **Run Batch** webview pro
 
 **From endpoint:**
 1. Configure endpoint with template variables
-2. Load CSV and map columns
+2. Load data and map columns
 3. Click **Run Batch** button
 4. Run Batch webview opens
 
 **From context menu:**
 1. Right-click endpoint in sidebar
 2. Select **Run Batch**
-3. Choose CSV file (if not already loaded)
+3. Load data (if not already loaded)
 
 ### Run Batch Interface
 
 **Configuration summary:**
 - Endpoint name and method
 - Environment target
-- Row count from CSV
+- Row count from source data
 - Mapped variables preview
 
 **Execution controls:**
@@ -352,18 +355,18 @@ After configuring a batch in the endpoint webview, the **Run Batch** webview pro
 ### Batch Results
 
 When batch completes:
-- Full report opens automatically
+- Console opens automatically
 - Results saved to workspace (`.active8/results/`)
 - CSV with results available
 - Execution remains in history
 
-**Report includes:**
+**Console shows:**
 - Summary statistics
 - Complete request/response data
 - Error analysis
 - Performance metrics
 
-See [Viewing Results](viewing-results) documentation for detailed report features.
+See [Console](console) for detailed results and export features.
 
 ## Advanced Features
 
@@ -454,12 +457,12 @@ For APIs supporting pagination, use the special `{{A8:PAGE}}` variable:
 
 ## Troubleshooting
 
-### CSV Not Loading
+### File Not Loading
 
 **Symptoms:** File browser appears but file doesn't load
 
 **Check:**
-- File extension is `.csv` or `.txt`
+- File extension is `.xlsx`, `.xls`, `.csv`, or `.txt`
 - File encoding is UTF-8
 - File is not locked by another application
 - File size is reasonable (<10MB recommended)
@@ -489,7 +492,7 @@ For APIs supporting pagination, use the special `{{A8:PAGE}}` variable:
 **Symptoms:** Template variables appear literally in request (e.g., `{{sku}}` in JSON)
 
 **Causes:**
-- Variable not mapped to CSV column
+- Variable not mapped to a source data column
 - Column name mismatch
 - Variable misspelled in template
 
@@ -520,11 +523,11 @@ For APIs supporting pagination, use the special `{{A8:PAGE}}` variable:
 
 ## Best Practices
 
-**CSV preparation:**
+**Data preparation:**
 - Clean data before importing (remove duplicates, fix formatting)
 - Include meaningful column headers
 - Test with small sample (10-20 rows) first
-- Keep backups of original CSV files
+- Keep backups of original data files
 
 **Error handling:**
 - Start with "Stop on First Error" for testing
@@ -547,6 +550,5 @@ For APIs supporting pagination, use the special `{{A8:PAGE}}` variable:
 ## Related Topics
 
 - [Endpoints](endpoints) - Template variables and configuration
-- [Execution](execution) - Running and monitoring requests
-- [Viewing Results](viewing-results) - Analyzing batch results
+- [Console](console) - Running and monitoring requests
 - [Import/Export](import-export) - Sharing endpoint configurations

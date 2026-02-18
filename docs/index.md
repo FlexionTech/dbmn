@@ -15,11 +15,11 @@ Welcome to the Dobermann documentation. Dobermann bridges the gap between spread
 |-------|-------------|
 | [Getting Started](getting-started) | Installation and first steps |
 | [Environments](environments) | Configure API connections and authentication |
+| [↳ OAuth Setup Guide](oauth-setup) | OAuth and Google Service Account configuration |
 | [Endpoints](endpoints) | Configure API requests, share with your team |
 | [↳ Template Variables](template-variables) | Variable syntax, types, modifiers, and editing |
-| [Batch Preparation](batch-preparation) | Load CSV/Excel files and map columns |
-| [Execution](execution) | Run individual and batch requests |
-| [Viewing Results](viewing-results) | Analyze transaction reports |
+| [Batch Preparation](batch-preparation) | Load data and map columns |
+| [Console](console) | Run requests, monitor progress, analyse results |
 | [Import/Export](import-export) | Share configurations with your team |
 | [Shortcuts](shortcuts) | Keyboard shortcuts for efficiency |
 | [Troubleshooting](troubleshooting) | Common issues and solutions |
@@ -27,15 +27,17 @@ Welcome to the Dobermann documentation. Dobermann bridges the gap between spread
 
 ## What is Dobermann?
 
-Excel is still the number one tool for working with data. But working with JSON APIs from a spreadsheet? Almost impossible. Dobermann bridges that gap — take your spreadsheet data, map it to an API template, and execute thousands of requests with validation, transformation, and real-time results.
+Excel is still the number one tool for working with data. But working with JSON APIs from a spreadsheet? Almost impossible. Dobermann bridges that gap — take your data, map it to an API template, and execute thousands of requests with validation, transformation, and real-time results.
 
 - **Endpoint Configuration** — Define HTTP method, URL, headers, body templates, and share them with your team
-- **Template Variables** — Map spreadsheet columns to API fields with type validation, modifiers, and conditional logic
-- **Environment Management** — Manage connections, authentication, and per-environment variables
+- **Template Variables** — Map source data columns to API fields with type validation, modifiers, and conditional logic
+- **Environment Management** — Manage connections, authentication (JWT, OAuth, Google Service Account), and per-environment variables
 - **Batch Execution** — Process thousands of rows with parallel processing and live progress
-- **Real-Time Reporting** — Watch results stream in as your batch executes
+- **Live Results** — Watch results stream in as your batch executes
 
 ## Installation
+
+Currently available as a VS Code extension:
 
 1. Open VS Code
 2. Go to Extensions (Ctrl+Shift+X / Cmd+Shift+X)

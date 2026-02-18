@@ -17,7 +17,7 @@ All notable changes to Dobermann are documented here.
 - **`|asString` modifier** — Force any value to be treated as a string in JSON output
 - **HTML response viewer** — Three view modes (Raw/Render/Text) for HTML responses in the RAW tab
 - **Paste header confirmation modal** — Review and confirm pasted headers before they're applied
-- **Rich copy from reports** — Copy transaction data as TSV, HTML, Markdown, or CSV
+- **Rich copy from Console** — Copy transaction data as TSV, HTML, Markdown, or CSV
 - **RAW tab improvements** — Enhanced JSON viewing with Monaco Editor integration
 
 ### Fixed
@@ -42,7 +42,7 @@ All notable changes to Dobermann are documented here.
 - Rebranded from "Active8" to "Dobermann" across all UI
 
 ### Fixed
-- Status-based classification for report tabs
+- Status-based classification for Console tabs
 
 ## v0.0.48 — 2026-01-14
 

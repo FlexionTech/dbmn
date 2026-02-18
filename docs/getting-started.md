@@ -7,45 +7,39 @@ parent: Documentation
 
 # Getting Started with Dobermann
 
-Welcome to Dobermann, a VS Code extension for mass data loading into Manhattan Active APIs.
-
-## What is Dobermann?
-
-Dobermann is a VS Code extension that enables you to execute API requests individually or in batches using CSV/Excel files. It provides endpoint management, environment configuration, template variables, and comprehensive execution tracking.
+Dobermann bridges the gap between table-structured data and JSON APIs — enabling fast, efficient API interactions at scale. Take your spreadsheet data, map it to an API template, and execute thousands of requests with validation, transformation, and real-time results.
 
 ## Quick Start
 
-Get started with Dobermann in 5 simple steps:
+Get up and running in 5 steps:
 
-1. **Create an Environment** - Define your API base URL and authentication
-2. **Create an Endpoint** - Configure HTTP method, URL, headers, and body template
-3. **Run Single Request** - Test your endpoint with "Run API"
-4. **Upload CSV File** - Use "Run Batch" for bulk data processing
-5. **View Results** - Check transaction reports for request/response details
+1. **Create an Environment** — Define your API base URL and authentication
+2. **Create an Endpoint** — Configure HTTP method, URL, headers, and body template
+3. **Test with Run API** — Execute a single request to verify your configuration
+4. **Run a Batch** — Enter data in the grid or upload an Excel/CSV file, map columns to template variables, and execute
+5. **Watch it Go** — The Console opens automatically with results streaming in real-time. Sit back and watch your batch execute — don't grab a coffee, you'll miss the show.
 
 ## Core Concepts
 
-Understanding these core concepts will help you use Dobermann effectively.
-
 ### Environments
 
-Environments define where your APIs run (development, staging, production). Each environment includes a base URL, authentication method (JWT or OAuth), and organization selection for multi-tenant APIs.
+Environments define where your APIs run (development, staging, production). Each environment includes a base URL, authentication method (JWT, OAuth, or Google Service Account), and optional configuration like timezone and parallel processing.
 
 ### Endpoints
 
-Endpoints are API request configurations including HTTP method, URL path, query parameters, headers, request body template, and optional test scripts. Endpoints can be executed individually or in batches.
+Endpoints are complete API request configurations — HTTP method, URL path, query parameters, headers, and a request body template. Configure once, then run individually or in batches with thousands of rows. Share endpoints with your team in a single click.
 
 ### Template Variables
 
-Template variables use `{{variableName}}` syntax to create dynamic requests. Variables work in URL paths, query parameters, headers, and request bodies. For batch execution, CSV columns map to template variables.
+Template variables use `{{variableName}}` syntax to create dynamic requests. Variables work in URL paths, query parameters, headers, and request bodies. For batch execution, source data columns map to template variables.
 
 ### Transactions
 
-Every API request (individual or batch) creates a transaction record. Transactions include request details, response data, test results, and execution metadata. View transactions in the Transactions tree.
+Every API request (individual or batch) creates a transaction record with request details, response data, and execution metadata.
 
 ### Batch Execution
 
-Batch execution processes multiple API requests from CSV/Excel files. Upload a file, map columns to template variables, configure options (parallel processing, error tolerance), and execute. Monitor progress in real-time.
+Batch execution processes multiple API requests from your data. Enter values directly into the data grid or upload an Excel/CSV file, map columns to template variables, configure options (parallel processing, error tolerance), and execute. Monitor progress in real-time.
 
 ## Your First Workflow
 
@@ -53,25 +47,22 @@ Follow this complete workflow to execute your first API request.
 
 ### Step 1: Create an Environment
 
-1. Click the "+" icon on the Environments tree
+1. Click the **+** icon next to "Environments" in the sidebar
 2. Enter environment name (e.g., "Development")
-3. Select environment type (development, staging, production)
-4. Enter base URL (e.g., `https://api.example.com`)
-5. Choose authentication method (JWT or OAuth)
-6. Paste JWT token or configure OAuth
-7. Click "Save Environment"
-8. Right-click environment and select "Set as Active"
+3. Enter base URL (e.g., `https://api.example.com`)
+4. Choose authentication method and configure credentials
+5. Click **Save Environment**
+6. Right-click environment and select **Set as Active**
 
 ### Step 2: Create an Endpoint
 
-1. Click the "+" icon on the Endpoints tree
+1. Click the **+** icon next to "Endpoints" in the sidebar
 2. Enter endpoint name (e.g., "Create Order")
-3. Enter description
-4. Select HTTP method (POST)
-5. Enter URL path (e.g., `/api/orders`)
-6. Add headers if needed (e.g., `Content-Type: application/json`)
-7. Define request body template with variables
-8. Click "Save Endpoint"
+3. Select HTTP method (POST)
+4. Enter URL path (e.g., `/api/orders`)
+5. Add headers if needed (e.g., `Content-Type: application/json`)
+6. Define request body template with variables
+7. Click **Save Endpoint**
 
 **Example request body:**
 ```json
@@ -85,51 +76,44 @@ Follow this complete workflow to execute your first API request.
 ### Step 3: Run a Single API Call
 
 1. Right-click your endpoint
-2. Select "Run API"
+2. Select **Run API**
 3. Enter values for template variables:
    - orderId: `12345`
    - customerName: `John Doe`
    - quantity: `10`
-4. Click "Execute"
-5. Report webview opens showing request/response details
+4. Click **Execute**
+5. Console opens showing request/response details
 
-### Step 4: Upload a CSV File
+### Step 4: Run a Batch
 
-1. Create a CSV file with columns: `ORDER_ID`, `CUSTOMER_NAME`, `QUANTITY`
-2. Right-click your endpoint
-3. Select "Run Batch"
-4. Drag-and-drop your CSV file or click to browse
-5. Map CSV columns to template variables:
+1. Right-click your endpoint and select **Run Batch**
+2. Enter data directly into the grid, or upload an Excel/CSV file
+3. Map source data columns to template variables:
    - `orderId` → `ORDER_ID`
    - `customerName` → `CUSTOMER_NAME`
    - `quantity` → `QUANTITY`
-6. Configure batch options (parallel processing, error tolerance)
-7. Click "Run Batch"
+4. Configure batch options (parallel processing, error tolerance)
+5. Click **Run Batch**
 
-### Step 5: View Results
+### Step 5: Watch it Go
 
-1. Open the Transactions tree
-2. Find your batch execution (shows progress)
-3. Click the transaction to view detailed report
-4. Review request/response for each row
-5. Check for errors or failed requests
-6. Export results if needed
+The Console opens automatically and results stream in real-time as each request completes. You'll see live progress, success/error counts, and response times — all updating as the batch runs.
 
 ## What's Next?
 
-Now that you've completed your first workflow, explore these advanced features:
+Now that you've completed your first workflow, explore these features:
 
-**Template Variables:** Learn about data types, auto-generated variables, and using variables in URLs and headers. See [Endpoints](endpoints).
+**Template Variables:** Learn about data types, modifiers, auto-generated variables, and the template editor. See [Template Variables](template-variables).
 
-**Batch Preparation:** Master CSV upload, column mapping, and data transformations. See [Batch Preparation](batch-preparation).
+**Batch Preparation:** Master data loading, column mapping, and data transformations. See [Batch Preparation](batch-preparation).
 
-**Execution Options:** Understand individual vs batch execution, parallel processing, and error tolerance. See [Execution](execution).
+**Console:** Understand queue, parallel processing, error tolerance, and analyse results with the Console. See [Console](console).
 
-**OAuth Authentication:** Configure OAuth providers for token-based authentication. See [Environments](environments).
+**Environments:** Configure authentication (JWT, OAuth, Google Service Account), timezone, parallel threads, and more. See [Environments](environments).
+
+**Sharing:** Copy endpoint configurations and paste them in Teams, Outlook, or Confluence. See [Endpoints](endpoints#sharing).
 
 **Import/Export:** Share endpoint and environment configurations with your team. See [Import/Export](import-export).
-
-**Viewing Results:** Analyze transaction reports, test results, and performance metrics. See [Viewing Results](viewing-results).
 
 ## Getting Help
 
@@ -138,14 +122,13 @@ If you encounter issues or have questions:
 1. Check the [Troubleshooting](troubleshooting) guide
 2. Review relevant documentation sections
 3. Check execution logs for error details
-4. Open GitHub issues for bugs or feature requests
+4. [Report issues](https://github.com/FlexionTech/dbmn/issues) on GitHub
 
 ## Related Topics
 
-- [Environments](environments) - Managing API environments
-- [Endpoints](endpoints) - Endpoint configuration and template variables
-- [Batch Preparation](batch-preparation) - CSV upload and column mapping
-- [Execution](execution) - Running requests and monitoring progress
-- [Viewing Results](viewing-results) - Analyzing transaction reports
-- [Import/Export](import-export) - Sharing configurations
-- [Troubleshooting](troubleshooting) - Common issues and solutions
+- [Environments](environments) — Managing API environments
+- [Endpoints](endpoints) — Endpoint configuration and template variables
+- [Batch Preparation](batch-preparation) — Data loading and column mapping
+- [Console](console) — Running requests, monitoring progress, and analysing results
+- [Import/Export](import-export) — Sharing configurations
+- [Troubleshooting](troubleshooting) — Common issues and solutions

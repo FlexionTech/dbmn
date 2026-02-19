@@ -221,9 +221,9 @@ Navigate nested JSON response structures without writing code.
 
 Search across all visible columns simultaneously.
 
-- Shows match count (e.g., "Found 5 matches")
-- Highlights matching rows
+- Always shows the row count — total rows when no search is active, filtered/total when searching
 - Case-insensitive matching
+- **Copy and Export respect the active search filter** — only the filtered rows are included
 
 **Tips:**
 - Search for specific error messages
@@ -269,36 +269,51 @@ Results append to the existing table data.
 
 ---
 
-## Export Options
+## Copy & Export
 {: #copy-options }
 
-Save execution results for external analysis or sharing.
+Copy data to the clipboard or export to a file. All options respect the current tab, search filter, sort order, and visible columns.
 
-### Copy CSV
+### Copy
 
-Quick clipboard export — copy data directly without saving a file.
+The **Copy** dropdown copies data straight to your clipboard — no file needed.
 
-- All visible columns in current sort order
-- Respects current filter/search results
-- Paste directly into Excel, Google Sheets, Slack, or email
+| Format | Best for | What you get |
+|--------|----------|--------------|
+| **For Spreadsheet (TSV)** | Excel, Google Sheets | Tab-separated values — pastes directly into cells |
+| **For Email (HTML)** | Outlook, Gmail, Word, Teams, Confluence | Styled HTML table with formatting |
+| **For Jira/Docs (Markdown)** | GitHub, Jira, Notion | GitHub Flavoured Markdown table |
+| **CSV** | Scripts, data pipelines | Comma-separated plain text |
 
 **Example workflow:**
 1. Switch to Error tab
 2. Search for a specific error pattern
 3. Sort by timestamp
-4. Click Export → Copy CSV
-5. Paste into email to share with team
+4. Click Copy → **For Email (HTML)**
+5. Paste into Outlook — formatted table appears inline
 
-### Export to CSV (File)
+### Export
 
-Save visible data to a CSV file. Includes all visible columns, respects current filter/search, and preserves sort order.
+The **Export** dropdown saves data to a file.
 
-### Export to Excel (File)
+| Format | Details |
+|--------|---------|
+| **CSV** | Plain text, streams line-by-line — handles any size |
+| **Excel (.xlsx)** | Formatted workbook with colour-coded status codes and typed columns |
 
-Save results as a formatted Excel workbook:
-- Multiple sheets (Completed, Errors become separate sheets)
-- Formatted headers and preserved data types
-- Cell formatting with colour-coded status codes
+### Limits
+
+Large copy/export operations can overwhelm target applications or the extension host. Dobermann enforces sensible limits:
+
+| Action | Format | Limit | Reason |
+|--------|--------|-------|--------|
+| Copy | HTML / TSV | 1,000 rows | Paste crashes Excel/Outlook with large tables |
+| Copy | Markdown | 1,000 rows | Paste crashes target apps |
+| Copy | CSV | 10,000 rows | Lighter format, higher tolerance |
+| Export | Excel | 2,000,000 cells | XLSX library OOM in extension host |
+| Export | CSV | Unlimited | Streams line-by-line |
+
+If you hit a limit, switch to CSV export (file) — it streams without memory constraints.
 
 ---
 

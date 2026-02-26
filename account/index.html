@@ -5,15 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Account - DBMN</title>
     <meta name="description" content="Your DBMN account dashboard">
+    <link rel="icon" type="image/svg+xml" href="/images/dobermannOutline.svg">
     <link rel="icon" type="image/png" href="/images/DBMNLogo.png">
+    <link rel="stylesheet" href="/css/brand.css">
     <link rel="stylesheet" href="shared.css">
 </head>
 <body>
-    <div class="container">
-        <div class="logo">
+    <header class="site-header has-user">
+        <a href="/">
             <img src="/images/DBMNLogo.png" alt="DBMN">
             <h1>DBMN</h1>
+        </a>
+        <div class="header-right">
+            <span id="headerEmail"></span>
+            <a href="#" id="headerSignOut">Sign Out</a>
         </div>
+    </header>
+
+    <div class="container">
 
         <div class="card" id="loadingCard">
             <h2>Loading...</h2>
@@ -90,8 +99,12 @@
             if (!user) {
                 document.getElementById('loadingCard').style.display = 'none';
                 document.getElementById('signInCard').style.display = 'block';
+                document.querySelector('.header-right').style.display = 'none';
                 return;
             }
+
+            // Populate header
+            document.getElementById('headerEmail').textContent = user.email;
 
             try {
                 // Fetch license and usage data
@@ -151,11 +164,14 @@
                 showAlert('alert', 'Failed to load account data: ' + err.message, 'error');
             }
 
-            // Sign out handler
-            document.getElementById('signOutBtn').addEventListener('click', async function() {
+            // Sign out handlers (card button + header link)
+            async function handleSignOut(e) {
+                if (e) e.preventDefault();
                 await dbmnSupabase.auth.signOut();
                 window.location.reload();
-            });
+            }
+            document.getElementById('signOutBtn').addEventListener('click', handleSignOut);
+            document.getElementById('headerSignOut').addEventListener('click', handleSignOut);
         });
     </script>
 </body>

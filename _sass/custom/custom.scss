@@ -1,6 +1,6 @@
 // Cooper Black heading font for site title
 .site-title {
-  font-family: 'Cooper Black', Georgia, serif;
+  font-family: var(--brand-font-heading);
   gap: $sp-3;
 }
 

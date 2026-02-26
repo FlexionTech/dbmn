@@ -13,24 +13,18 @@ nav_exclude: true
     <meta name="description" content="{{ page.description }}">
     <link rel="icon" type="image/svg+xml" href="/images/dobermannOutline.svg">
     <link rel="icon" type="image/png" href="/images/DBMNLogo.png">
+    <link rel="stylesheet" href="/css/brand.css">
     <style>
-        @font-face {
-            font-family: 'Cooper Black';
-            src: url('/fonts/Cooper-Black.woff2') format('woff2');
-            font-weight: 900;
-            font-style: normal;
-            font-display: swap;
-        }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            font-family: var(--brand-font-body);
+            background: linear-gradient(135deg, var(--brand-bg-start) 0%, var(--brand-bg-end) 100%);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            color: #fff;
+            color: var(--brand-text);
             text-align: center;
             padding: 2rem;
         }
@@ -40,7 +34,7 @@ nav_exclude: true
             margin-bottom: 2rem;
             object-fit: contain;
         }
-        h1 { font-family: 'Cooper Black', Georgia, serif; font-size: 3rem; margin-bottom: 1rem; }
+        h1 { font-family: var(--brand-font-heading); font-size: 3rem; margin-bottom: 1rem; }
         .tagline { font-size: 1.25rem; opacity: 0.8; margin-bottom: 2rem; max-width: 600px; }
         .buttons {
             display: flex;
@@ -51,8 +45,8 @@ nav_exclude: true
         }
         .cta {
             display: inline-block;
-            background: #0078d4;
-            color: #fff;
+            background: var(--brand-accent);
+            color: var(--brand-text);
             padding: 1rem 2rem;
             border-radius: 8px;
             text-decoration: none;
@@ -65,7 +59,7 @@ nav_exclude: true
             box-shadow: 0 10px 20px rgba(0,120,212,0.3);
         }
         .cta-secondary {
-            background: rgba(255,255,255,0.1);
+            background: var(--brand-surface);
             border: 2px solid rgba(255,255,255,0.3);
         }
         .cta-secondary:hover {
@@ -81,7 +75,7 @@ nav_exclude: true
             max-width: 1000px;
         }
         .feature {
-            background: rgba(255,255,255,0.1);
+            background: var(--brand-surface);
             padding: 1.5rem;
             border-radius: 12px;
             width: 200px;
@@ -95,13 +89,13 @@ nav_exclude: true
             font-size: 0.9rem;
         }
         footer a {
-            color: #fff;
+            color: var(--brand-text);
             text-decoration: none;
             border-bottom: 1px solid rgba(255,255,255,0.3);
             transition: border-color 0.2s;
         }
         footer a:hover {
-            border-color: #fff;
+            border-color: var(--brand-text);
         }
     </style>
 </head>

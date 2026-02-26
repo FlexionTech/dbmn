@@ -76,7 +76,10 @@
                 try {
                     var result = await dbmnSupabase.auth.signUp({
                         email: email,
-                        password: password
+                        password: password,
+                        options: {
+                            emailRedirectTo: 'https://dbmn.io/account/questionnaire.html'
+                        }
                     });
 
                     if (result.error) {

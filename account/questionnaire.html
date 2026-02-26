@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome - DBMN</title>
+    <meta name="description" content="Complete your DBMN profile">
+    <link rel="icon" type="image/png" href="/images/DBMNLogo.png">
+    <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="/images/DBMNLogo.png" alt="DBMN">
+            <h1>DBMN</h1>
+        </div>
+
+        <div class="card">
+            <h2>Tell us about yourself</h2>
+            <p style="color: #a0a0b0; font-size: 0.875rem; margin-bottom: 1.5rem;">
+                Help us understand how you'll use DBMN. Your 30-day trial starts now.
+            </p>
+
+            <div id="alert" class="alert"></div>
+
+            <form id="questionnaireForm">
+                <div class="form-group">
+                    <label for="displayName">Your Name</label>
+                    <input type="text" id="displayName" required placeholder="Full name">
+                </div>
+
+                <div class="form-group">
+                    <label for="company">Company</label>
+                    <input type="text" id="company" placeholder="Company name">
+                </div>
+
+                <div class="form-group">
+                    <label for="role">Your Role</label>
+                    <select id="role">
+                        <option value="">Select role...</option>
+                        <option value="developer">Developer / Engineer</option>
+                        <option value="consultant">Consultant</option>
+                        <option value="analyst">Business Analyst</option>
+                        <option value="admin">System Administrator</option>
+                        <option value="manager">Manager / Director</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="howHeard">How did you hear about DBMN?</label>
+                    <select id="howHeard">
+                        <option value="">Select...</option>
+                        <option value="vs-marketplace">VS Code Marketplace</option>
+                        <option value="colleague">Colleague / Word of mouth</option>
+                        <option value="search">Google / Search</option>
+                        <option value="social">Social media</option>
+                        <option value="manhattan-community">Manhattan community</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="useCase">Primary use case</label>
+                    <textarea id="useCase" placeholder="What will you use DBMN for? (e.g., data loads, API testing, batch operations...)"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="manhattanExperience">Manhattan Active experience</label>
+                    <select id="manhattanExperience">
+                        <option value="">Select...</option>
+                        <option value="new">New to Manhattan Active</option>
+                        <option value="1-2-years">1-2 years</option>
+                        <option value="3-5-years">3-5 years</option>
+                        <option value="5-plus-years">5+ years</option>
+                    </select>
+                </div>
+
+                <button type="submit" id="submitBtn" class="btn btn-primary">Complete Setup</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="shared.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+            initSupabase();
+
+            // Verify user is authenticated
+            var user = await getCurrentUser();
+            if (!user) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            var form = document.getElementById('questionnaireForm');
+
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                hideAlert('alert');
+
+                var profileData = {
+                    id: user.id,
+                    email: user.email,
+                    display_name: document.getElementById('displayName').value.trim(),
+                    company: document.getElementById('company').value.trim() || null,
+                    role: document.getElementById('role').value || null,
+                    how_heard: document.getElementById('howHeard').value || null,
+                    use_case: document.getElementById('useCase').value.trim() || null,
+                    manhattan_experience: document.getElementById('manhattanExperience').value || null
+                };
+
+                setButtonLoading('submitBtn', true, 'Saving...');
+
+                try {
+                    // Save profile
+                    var profileResult = await supabase
+                        .from('user_profiles')
+                        .upsert(profileData);
+
+                    if (profileResult.error) {
+                        showAlert('alert', 'Failed to save profile: ' + profileResult.error.message, 'error');
+                        setButtonLoading('submitBtn', false);
+                        return;
+                    }
+
+                    // Create trial license
+                    var now = new Date();
+                    var trialEnd = new Date(now);
+                    trialEnd.setDate(trialEnd.getDate() + 30);
+
+                    var licenseResult = await supabase
+                        .from('user_licenses')
+                        .insert({
+                            user_id: user.id,
+                            license_type: 'trial',
+                            status: 'active',
+                            trial_started_at: now.toISOString(),
+                            trial_ends_at: trialEnd.toISOString()
+                        });
+
+                    if (licenseResult.error) {
+                        console.warn('License creation warning:', licenseResult.error);
+                        // Non-fatal — continue
+                    }
+
+                    // Send welcome email notification
+                    try {
+                        await callEdgeFunction('send-welcome-email', {
+                            email: user.email,
+                            displayName: profileData.display_name,
+                            company: profileData.company || 'Not provided',
+                            role: profileData.role || 'Not provided',
+                            howHeard: profileData.how_heard || 'Not provided',
+                            useCase: profileData.use_case || 'Not provided',
+                            manhattanExperience: profileData.manhattan_experience || 'Not provided'
+                        });
+                    } catch (emailErr) {
+                        console.warn('Welcome email notification failed:', emailErr);
+                        // Non-fatal
+                    }
+
+                    // Redirect
+                    if (isVSCodeRedirect()) {
+                        var session = await getCurrentSession();
+                        if (session) {
+                            showAlert('alert', 'Account created! Redirecting to VS Code...', 'success');
+                            setTimeout(function() { redirectToVSCode(session); }, 1000);
+                        } else {
+                            window.location.href = 'login.html?redirect=vscode';
+                        }
+                    } else {
+                        window.location.href = 'index.html';
+                    }
+
+                } catch (err) {
+                    showAlert('alert', 'Setup failed: ' + err.message, 'error');
+                    setButtonLoading('submitBtn', false);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

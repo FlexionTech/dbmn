@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - DBMN</title>
+    <meta name="description" content="Create your DBMN account">
+    <link rel="icon" type="image/png" href="/images/DBMNLogo.png">
+    <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="/images/DBMNLogo.png" alt="DBMN">
+            <h1>DBMN</h1>
+        </div>
+
+        <div class="card">
+            <h2>Create Account</h2>
+
+            <div id="alert" class="alert"></div>
+
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" required placeholder="you@company.com" autocomplete="email">
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required minlength="8" placeholder="Minimum 8 characters" autocomplete="new-password">
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" required minlength="8" placeholder="Re-enter password" autocomplete="new-password">
+                </div>
+
+                <button type="submit" id="submitBtn" class="btn btn-primary">Create Account</button>
+            </form>
+
+            <div class="link-text">
+                Already have an account? <a href="login.html">Sign In</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="shared.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            initSupabase();
+
+            var form = document.getElementById('registerForm');
+
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                hideAlert('alert');
+
+                var email = document.getElementById('email').value.trim();
+                var password = document.getElementById('password').value;
+                var confirmPassword = document.getElementById('confirmPassword').value;
+
+                if (password !== confirmPassword) {
+                    showAlert('alert', 'Passwords do not match.', 'error');
+                    return;
+                }
+
+                if (password.length < 8) {
+                    showAlert('alert', 'Password must be at least 8 characters.', 'error');
+                    return;
+                }
+
+                setButtonLoading('submitBtn', true, 'Creating account...');
+
+                try {
+                    var result = await supabase.auth.signUp({
+                        email: email,
+                        password: password
+                    });
+
+                    if (result.error) {
+                        showAlert('alert', result.error.message, 'error');
+                        setButtonLoading('submitBtn', false);
+                        return;
+                    }
+
+                    // Check if email confirmation is required
+                    if (result.data.user && !result.data.session) {
+                        showAlert('alert', 'Check your email to confirm your account, then complete the questionnaire.', 'success');
+                        setButtonLoading('submitBtn', false);
+                        return;
+                    }
+
+                    // If auto-confirmed, redirect to questionnaire
+                    var redirect = isVSCodeRedirect() ? '?redirect=vscode' : '';
+                    window.location.href = 'questionnaire.html' + redirect;
+
+                } catch (err) {
+                    showAlert('alert', 'Registration failed: ' + err.message, 'error');
+                    setButtonLoading('submitBtn', false);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

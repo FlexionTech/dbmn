@@ -25,7 +25,7 @@
 
             <form id="questionnaireForm">
                 <div class="form-group">
-                    <label for="displayName">Your Name</label>
+                    <label for="displayName">Your Name *</label>
                     <input type="text" id="displayName" required placeholder="Full name">
                 </div>
 
@@ -48,6 +48,32 @@
                 </div>
 
                 <div class="form-group">
+                    <label for="postmanUsage">Do you currently use Postman?</label>
+                    <select id="postmanUsage">
+                        <option value="">Select...</option>
+                        <option value="yes-daily">Yes, daily</option>
+                        <option value="yes-occasionally">Yes, occasionally</option>
+                        <option value="tried-it">Tried it</option>
+                        <option value="no">No</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="apiFrustrations">What frustrations do you have with your current API workflow?</label>
+                    <textarea id="apiFrustrations" placeholder="e.g., Postman is too complex, hard to do bulk operations, collections are hard to share..."></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="betaExperience">Have you used beta or early-access software before?</label>
+                    <select id="betaExperience">
+                        <option value="">Select...</option>
+                        <option value="yes-regularly">Yes, regularly</option>
+                        <option value="a-few-times">A few times</option>
+                        <option value="no-first-time">No, this is my first</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
                     <label for="howHeard">How did you hear about DBMN?</label>
                     <select id="howHeard">
                         <option value="">Select...</option>
@@ -55,7 +81,6 @@
                         <option value="colleague">Colleague / Word of mouth</option>
                         <option value="search">Google / Search</option>
                         <option value="social">Social media</option>
-                        <option value="manhattan-community">Manhattan community</option>
                         <option value="other">Other</option>
                     </select>
                 </div>
@@ -66,19 +91,20 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="manhattanExperience">Manhattan Active experience</label>
-                    <select id="manhattanExperience">
-                        <option value="">Select...</option>
-                        <option value="new">New to Manhattan Active</option>
-                        <option value="1-2-years">1-2 years</option>
-                        <option value="3-5-years">3-5 years</option>
-                        <option value="5-plus-years">5+ years</option>
-                    </select>
+                    <label for="linkedinUrl">LinkedIn profile</label>
+                    <input type="url" id="linkedinUrl" placeholder="https://linkedin.com/in/...">
+                </div>
+
+                <div class="form-group">
+                    <label for="twitterHandle">Twitter / X handle</label>
+                    <input type="text" id="twitterHandle" placeholder="@yourhandle">
                 </div>
 
                 <button type="submit" id="submitBtn" class="btn btn-primary">Complete Setup</button>
             </form>
         </div>
+
+        <footer>&copy; 2026 <a href="https://flexion.tech">Flexion.tech</a></footer>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -119,9 +145,13 @@
                     display_name: document.getElementById('displayName').value.trim(),
                     company: document.getElementById('company').value.trim() || null,
                     role: document.getElementById('role').value || null,
+                    postman_usage: document.getElementById('postmanUsage').value || null,
+                    api_frustrations: document.getElementById('apiFrustrations').value.trim() || null,
+                    beta_experience: document.getElementById('betaExperience').value || null,
                     how_heard: document.getElementById('howHeard').value || null,
                     use_case: document.getElementById('useCase').value.trim() || null,
-                    manhattan_experience: document.getElementById('manhattanExperience').value || null
+                    linkedin_url: document.getElementById('linkedinUrl').value.trim() || null,
+                    twitter_handle: document.getElementById('twitterHandle').value.trim() || null
                 };
 
                 setButtonLoading('submitBtn', true, 'Saving...');
@@ -165,9 +195,13 @@
                             displayName: profileData.display_name,
                             company: profileData.company || 'Not provided',
                             role: profileData.role || 'Not provided',
+                            postmanUsage: profileData.postman_usage || 'Not provided',
+                            apiFrustrations: profileData.api_frustrations || 'Not provided',
+                            betaExperience: profileData.beta_experience || 'Not provided',
                             howHeard: profileData.how_heard || 'Not provided',
                             useCase: profileData.use_case || 'Not provided',
-                            manhattanExperience: profileData.manhattan_experience || 'Not provided'
+                            linkedinUrl: profileData.linkedin_url || 'Not provided',
+                            twitterHandle: profileData.twitter_handle || 'Not provided'
                         });
                     } catch (emailErr) {
                         console.warn('Welcome email notification failed:', emailErr);

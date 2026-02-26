@@ -26,8 +26,9 @@ body {
 }
 
 .logo img {
-    width: 64px;
-    height: 64px;
+    width: 150px;
+    height: auto;
+    object-fit: contain;
 }
 
 .logo h1 {
@@ -39,7 +40,7 @@ body {
 .card {
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
+    border-radius: 8px;
     padding: 2rem;
 }
 
@@ -77,7 +78,7 @@ body {
 .form-group select:focus,
 .form-group textarea:focus {
     outline: none;
-    border-color: #4a9eff;
+    border-color: #0078d4;
 }
 
 .form-group textarea {
@@ -92,19 +93,20 @@ body {
 
 .btn {
     display: inline-block;
-    padding: 0.625rem 1.25rem;
+    padding: 0.75rem 1.5rem;
     border: none;
-    border-radius: 6px;
+    border-radius: 8px;
     font-size: 0.9375rem;
-    font-weight: 500;
+    font-weight: 600;
     cursor: pointer;
-    transition: opacity 0.2s, transform 0.1s;
+    transition: transform 0.2s, box-shadow 0.2s;
     text-decoration: none;
     text-align: center;
 }
 
 .btn:hover {
-    opacity: 0.9;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0, 120, 212, 0.3);
 }
 
 .btn:active {
@@ -112,7 +114,7 @@ body {
 }
 
 .btn-primary {
-    background: #4a9eff;
+    background: #0078d4;
     color: #fff;
     width: 100%;
 }
@@ -123,9 +125,16 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.15);
 }
 
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 10px 20px rgba(255, 255, 255, 0.1);
+}
+
 .btn:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
 }
 
 .link-text {
@@ -136,7 +145,7 @@ body {
 }
 
 .link-text a {
-    color: #4a9eff;
+    color: #0078d4;
     text-decoration: none;
 }
 
@@ -165,8 +174,8 @@ body {
 }
 
 .alert-info {
-    background: rgba(74, 158, 255, 0.15);
-    border: 1px solid rgba(74, 158, 255, 0.3);
+    background: rgba(0, 120, 212, 0.15);
+    border: 1px solid rgba(0, 120, 212, 0.3);
     color: #7ab8ff;
 }
 
@@ -247,4 +256,24 @@ body {
 
 @keyframes spin {
     to { transform: rotate(360deg); }
+}
+
+/* Footer */
+footer {
+    margin-top: 2rem;
+    padding-bottom: 2rem;
+    opacity: 0.6;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+footer a {
+    color: #fff;
+    text-decoration: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    transition: border-color 0.2s;
+}
+
+footer a:hover {
+    border-color: #fff;
 }

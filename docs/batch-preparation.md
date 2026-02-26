@@ -345,11 +345,9 @@ Click **Execute** to start the batch. The Console opens automatically and result
 - **Elapsed time** — Running timer
 - **Requests per second** — Throughput metric
 
-### Pausing and Stopping
+### Pausing
 
 **Pause** — Temporarily halt execution after the current request completes. Resume from the exact position. Useful for rate limit cooling or reviewing errors mid-run.
-
-**Stop** — Terminate batch immediately. Partial results are saved. Cannot resume (must start over).
 
 ### Batch Results
 

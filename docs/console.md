@@ -3,6 +3,7 @@ title: Console
 layout: default
 nav_order: 5
 parent: Documentation
+has_children: true
 ---
 
 # Console
@@ -76,7 +77,7 @@ The top section displays high-level execution metrics in compact stat cards:
 - **Success** — All requests succeeded (2xx responses)
 - **Partial** — Some requests failed
 - **Failed** — All requests failed
-- **Stopped** — Batch stopped by user
+- **Paused** — Batch paused by user
 - **Running** — Batch currently executing
 - **Queued** — Waiting for another batch to complete
 
@@ -94,8 +95,6 @@ The top section displays high-level execution metrics in compact stat cards:
 During a batch execution:
 
 **Pause** — Halts execution after the current request completes. All progress is saved. Click **Resume** to continue from the exact position. Useful for rate limit cooling or reviewing errors mid-run.
-
-**Stop** — Terminates execution immediately. Partial results are saved. Cannot resume (would need to start over).
 
 **Rename** — Edit the batch name during execution for easier identification in history.
 
@@ -253,21 +252,9 @@ Click any column header to sort:
 ## Pagination
 {: #pagination }
 
-For large result sets, Dobermann uses pagination to improve performance.
+Dobermann has full support for paginated APIs — configure page and size parameters, auto-detect settings from API responses, and fetch hundreds of pages with concurrent execution.
 
-**Pagination info** shows current page context:
-- Current page number (e.g., "Page 2 of 10")
-- Record range (e.g., "Records 51-100 of 1,000")
-- **Next Page** button to load more
-
-### Get Multiple Pages
-
-Click **Get Multiple Pages** when pagination is available:
-
-- **Get All Remaining Pages** — Fetches all pages automatically with progress bar and cancel option
-- **Get Page Range** — Specify From/To page numbers for a specific subset
-
-Results append to the existing table data.
+See the dedicated [Pagination](pagination) guide for the complete workflow.
 
 ---
 
@@ -331,7 +318,7 @@ Expand **Executions** in the sidebar to see past runs grouped by endpoint:
 - Checkmark — All successful
 - Warning — Partial (some failures)
 - X — All failed
-- Pause — Stopped/incomplete
+- Pause — Paused/incomplete
 
 Click any execution to reopen the Console with full results.
 
@@ -452,6 +439,7 @@ For batches over 1,000 rows:
 
 ## Related Topics
 
+- [Pagination](pagination) — Configure and run paginated API requests
 - [Endpoints](endpoints) — Configuring API requests
 - [Batch Preparation](batch-preparation) — Data loading and column mapping
 - [Environments](environments) — Authentication, timezone, and parallel processing

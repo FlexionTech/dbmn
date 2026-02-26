@@ -98,11 +98,22 @@ Key-value pairs appended to the URL. Each parameter supports enable/disable togg
 - `limit`: `{{maxResults:number}}`
 - `includeActive`: `{{isActive:boolean}}`
 
-### Pagination with A8:PAGE
+### Pagination
 
-Use `{{A8:PAGE}}` in a query parameter to enable automatic page iteration during batch execution. Dobermann increments the page number and continues until no more results are returned.
+Dobermann uses two special template variables for paginated APIs:
 
-**Example:** Parameter `page`, Value: `{{A8:PAGE}}`
+| Variable | Format | Example |
+|----------|--------|---------|
+| `{{A8:PAGE}}` | `{{A8:PAGE:start:totalCountPath}}` | `{{A8:PAGE:0:header.totalCount}}` |
+| `{{A8:SIZE}}` | `{{A8:SIZE:value:sizePath}}` | `{{A8:SIZE:100:header.pageSize}}` |
+
+- **A8:PAGE** — The page number. `start` is `0` or `1` (first page number). `totalCountPath` is the JSON path to the total record count in the response.
+- **A8:SIZE** — The page size. `value` is the number of records per page. `sizePath` is the JSON path to the page size in the response.
+
+{: .warning }
+> Do not edit these values directly. Use the **Configure Pagination** screen in the Console instead — it auto-detects settings from your API response and writes the correct templates for you.
+
+See the [Pagination guide](pagination) for the complete setup and execution workflow.
 
 ### Query Parameter Repetition
 

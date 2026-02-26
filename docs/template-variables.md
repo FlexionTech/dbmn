@@ -174,7 +174,8 @@ System-generated values computed at execution time. You're never prompted for th
 | `{{A8:sequence}}` | `1001`, `1002`, ... | Auto-incrementing number per endpoint |
 | `{{A8:date}}` | `20260217` | Current date (YYYYMMDD) |
 | `{{A8:datetime}}` | `2026-02-17T14:30:00` | Current UTC timestamp |
-| `{{A8:PAGE}}` | `1`, `2`, `3`, ... | Page number for pagination |
+| `{{A8:PAGE}}` | `0`, `1`, `2`, ... | Page number for [pagination](pagination) |
+| `{{A8:SIZE}}` | `100` | Page size for [pagination](pagination) |
 
 ### A8 Date Formats
 

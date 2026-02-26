@@ -21,6 +21,7 @@ Welcome to the Dobermann documentation. Dobermann bridges the gap between spread
 | [↳ Template Variables](template-variables) | Variable syntax, types, modifiers, and editing |
 | [Batch Preparation](batch-preparation) | Load data and map columns |
 | [Console](console) | Run requests, monitor progress, analyse results |
+| [↳ Pagination](pagination) | Configure and run paginated API requests |
 | [Import/Export](import-export) | Share configurations with your team |
 | [Shortcuts](shortcuts) | Keyboard shortcuts for efficiency |
 | [Troubleshooting](troubleshooting) | Common issues and solutions |

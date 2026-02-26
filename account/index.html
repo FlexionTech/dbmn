@@ -98,7 +98,7 @@
                 var licenseData = await callEdgeFunction('check-license', null, 'GET');
 
                 // Fetch profile
-                var profileResult = await supabase
+                var profileResult = await dbmnSupabase
                     .from('user_profiles')
                     .select('*')
                     .eq('id', user.id)

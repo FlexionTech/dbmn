@@ -96,17 +96,17 @@
     <script src="https://js.stripe.com/v3"></script>
     <script src="/account/shared.js"></script>
     <script>
-        var STRIPE_PK = 'pk_test_51T5h5qHxo6ioaSfM9B9zzjcj7RWfwCwCjl5afBTOi4hxQNcXjNUOYpW8a6zrKX5yiRRLIHlBqYMsOFgpUXR1LVJf00TVZ1Tp1s';
+        var STRIPE_PK = 'pk_live_51T5h5cQVDQBTauyo0lExmWyNsUmVcnB0SL6wMK9kh0oRK7HMGHwqpQ0ntjiCI97FXKaIG4NPH9pBTewynGWotaZ000l0CxE6LF';
 
-        // Plan definitions with Stripe price IDs
+        // Plan definitions with Stripe price IDs (LIVE)
         var PLANS = {
-            individual_monthly:  { name: 'Individual', desc: 'Full access, 1 user', price: '$25/month', type: 'user', priceId: 'price_1T5jqTHxo6ioaSfMYI4ZBo2t', isLifetime: false },
-            individual_annual:   { name: 'Individual (Annual)', desc: 'Full access, 1 user — 2 months free', price: '$250/year', type: 'user', priceId: 'price_1T5jqzHxo6ioaSfMvFiFEtoJ', isLifetime: false },
-            environment_monthly: { name: 'Environment', desc: 'Unlimited users, 1 environment', price: '$250/month', type: 'environment', priceId: 'price_1T5jrPHxo6ioaSfMdk1868Mh', isLifetime: false },
-            environment_annual:  { name: 'Environment (Annual)', desc: 'Unlimited users, 1 environment — 2 months free', price: '$2,500/year', type: 'environment', priceId: 'price_1T5jrrHxo6ioaSfMs9c1EfCM', isLifetime: false },
-            bundle_monthly:      { name: 'Prod + Non-Prod', desc: 'Unlimited users, 2 environments', price: '$450/month', type: 'bundle', priceId: 'price_1T5jsIHxo6ioaSfMUIInpAHR', isLifetime: false },
-            bundle_annual:       { name: 'Prod + Non-Prod (Annual)', desc: 'Unlimited users, 2 environments — 2 months free', price: '$4,500/year', type: 'bundle', priceId: 'price_1T5jsmHxo6ioaSfMUNztYi7k', isLifetime: false },
-            lifetime:            { name: 'Lifetime Individual', desc: 'One-time payment, no expiry', price: '$500', type: 'user', priceId: 'price_1T5juIHxo6ioaSfMUclV3GK6', isLifetime: true }
+            individual_monthly:  { name: 'Individual', desc: 'Full access, 1 user', price: '$25/month', type: 'user', priceId: 'price_1T8pXGQVDQBTauyoyiauikao', isLifetime: false },
+            individual_annual:   { name: 'Individual (Annual)', desc: 'Full access, 1 user — 2 months free', price: '$250/year', type: 'user', priceId: 'price_1T8pXyQVDQBTauyooc2ykSuR', isLifetime: false },
+            environment_monthly: { name: 'Environment', desc: 'Unlimited users, 1 environment', price: '$250/month', type: 'environment', priceId: 'price_1T8pV7QVDQBTauyoXg3YXEBw', isLifetime: false },
+            environment_annual:  { name: 'Environment (Annual)', desc: 'Unlimited users, 1 environment — 2 months free', price: '$2,500/year', type: 'environment', priceId: 'price_1T8pWbQVDQBTauyouiCLfNuL', isLifetime: false },
+            bundle_monthly:      { name: 'Prod + Non-Prod', desc: 'Unlimited users, 2 environments', price: '$450/month', type: 'bundle', priceId: 'price_1T8pUXQVDQBTauyo9FGtA3ov', isLifetime: false },
+            bundle_annual:       { name: 'Prod + Non-Prod (Annual)', desc: 'Unlimited users, 2 environments — 2 months free', price: '$4,500/year', type: 'bundle', priceId: 'price_1T8pU5QVDQBTauyoAmPL9UAu', isLifetime: false },
+            lifetime:            { name: 'Lifetime Individual', desc: 'One-time payment, no expiry', price: '$500', type: 'user', priceId: 'price_1T8pSwQVDQBTauyofJ4fTRkX', isLifetime: true }
         };
 
         document.addEventListener('DOMContentLoaded', async function() {

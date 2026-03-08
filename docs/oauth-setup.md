@@ -28,7 +28,7 @@ In your OAuth provider (e.g., Azure AD, Okta, Auth0, Google Cloud Console):
 Add the following redirect URI to your OAuth provider's allowed callback URLs:
 
 ```
-vscode://flexiontech.active8/oauth-callback
+vscode://dbmn.dobermann/oauth-callback
 ```
 
 This is the URI Dobermann uses to receive the authorization code after the user authenticates. If your provider requires an exact match, ensure there are no trailing slashes or extra characters.
@@ -138,7 +138,7 @@ Google Service Accounts provide server-to-server authentication without user int
 
 ### OAuth: "Redirect URI mismatch"
 
-Your OAuth provider's allowed redirect URIs don't include `vscode://flexiontech.active8/oauth-callback`. Add it in your provider's application settings.
+Your OAuth provider's allowed redirect URIs don't include `vscode://dbmn.dobermann/oauth-callback`. Add it in your provider's application settings.
 
 ### OAuth: "Invalid client" or "Unauthorized client"
 

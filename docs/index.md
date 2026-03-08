@@ -48,9 +48,9 @@ Currently available as a VS Code extension:
 3. Search for "Dobermann"
 4. Click Install
 
-Or install directly from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=FlexionTech.active8).
+Or install directly from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=dbmn.dobermann).
 
 ## Support
 
-- [Report Issues](https://github.com/FlexionTech/dbmn/issues) - Bug reports and feature requests
-- [GitHub Discussions](https://github.com/FlexionTech/dbmn/discussions) - Questions and community help
+- [Report Issues](https://github.com/dbmn-io/dbmn/issues) - Bug reports and feature requests
+- [GitHub Discussions](https://github.com/dbmn-io/dbmn/discussions) - Questions and community help

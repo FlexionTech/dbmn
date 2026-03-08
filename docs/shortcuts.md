@@ -70,7 +70,7 @@ You can customize Dobermann shortcuts through VS Code's Keyboard Shortcuts edito
 
 1. Open Command Palette (`Ctrl+Shift+P` / `Cmd+Shift+P`)
 2. Type "Preferences: Open Keyboard Shortcuts"
-3. Search for "Active8"
+3. Search for "Dobermann"
 4. Click the pencil icon next to any command
 5. Press your desired key combination
 6. Press `Enter` to save

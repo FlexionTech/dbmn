@@ -17,8 +17,8 @@ Dobermann is a VS Code extension for mass data loading into Enterprise SaaS soft
 
 ## Getting Started
 
-Install Dobermann from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=FlexionTech.active8), then check out our [Getting Started guide]({{ site.baseurl }}/docs/getting-started) to configure your first environment and endpoint.
+Install Dobermann from the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=dbmn.dobermann), then check out our [Getting Started guide]({{ site.baseurl }}/docs/getting-started) to configure your first environment and endpoint.
 
 ## Community
 
-Have questions or ideas? Visit our [GitHub Discussions](https://github.com/FlexionTech/dbmn/discussions). Found a bug? [Open an issue](https://github.com/FlexionTech/dbmn/issues).
+Have questions or ideas? Visit our [GitHub Discussions](https://github.com/dbmn-io/dbmn/discussions). Found a bug? [Open an issue](https://github.com/dbmn-io/dbmn/issues).

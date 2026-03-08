@@ -45,7 +45,7 @@ This guide covers common issues, error messages, and solutions for Dobermann. Is
 **Redirect URI mismatch:**
 - Check OAuth provider configuration
 - Ensure redirect URI matches exactly
-- Format: `vscode://flexiontech.active8/oauth-callback`
+- Format: `vscode://dbmn.dobermann/oauth-callback`
 
 **Client credentials incorrect:**
 - Verify client ID is correct
@@ -332,8 +332,8 @@ When reporting issues, include:
 
 ### Reporting Issues
 
-- [GitHub Issues](https://github.com/FlexionTech/dbmn/issues) - Bug reports and feature requests
-- [GitHub Discussions](https://github.com/FlexionTech/dbmn/discussions) - Questions and community help
+- [GitHub Issues](https://github.com/dbmn-io/dbmn/issues) - Bug reports and feature requests
+- [GitHub Discussions](https://github.com/dbmn-io/dbmn/discussions) - Questions and community help
 
 ## Related Topics
 

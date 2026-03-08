@@ -20,9 +20,9 @@ logo: "/images/DBMNLogo.png"
 # Aux links (top right)
 aux_links:
   "VS Code Marketplace":
-    - "https://marketplace.visualstudio.com/items?itemName=FlexionTech.active8"
+    - "https://marketplace.visualstudio.com/items?itemName=dbmn.dobermann"
   "GitHub":
-    - "https://github.com/FlexionTech/dbmn"
+    - "https://github.com/dbmn-io/dbmn"
 
 aux_links_new_tab: true
 

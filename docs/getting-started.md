@@ -123,7 +123,7 @@ If you encounter issues or have questions:
 1. Check the [Troubleshooting](troubleshooting) guide
 2. Review relevant documentation sections
 3. Check execution logs for error details
-4. [Report issues](https://github.com/FlexionTech/dbmn/issues) on GitHub
+4. [Report issues](https://github.com/dbmn-io/dbmn/issues) on GitHub
 
 ## Related Topics
 

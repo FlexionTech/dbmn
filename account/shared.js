@@ -6,7 +6,7 @@
  */
 
 // Supabase configuration — set after project creation
-const SUPABASE_URL = 'https://bxrflqpkiheyrqpikfll.supabase.co';
+const SUPABASE_URL = 'https://api.dbmn.io';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJ4cmZscXBraWhleXJxcGlrZmxsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE5ODg3MzgsImV4cCI6MjA4NzU2NDczOH0.-qC5CregIAJwZvR_NsR1Sa6h-DuPICOO3gt55fgbycU';
 
 // VS Code extension URI for auth callback

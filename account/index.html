@@ -217,7 +217,9 @@
                 } else if (license.licenseType === 'user') {
                     detailsHtml += '<div class="license-detail-row"><span class="license-detail-label">Type</span><span class="license-detail-value">Individual License</span></div>';
                     if (license.subscriptionEndsAt) {
-                        detailsHtml += '<div class="license-detail-row"><span class="license-detail-label">Subscription ends</span><span class="license-detail-value">' + new Date(license.subscriptionEndsAt).toLocaleDateString() + '</span></div>';
+                        var subLabel = license.cancelAtPeriodEnd ? 'Cancels on' : 'Renews on';
+                        var subStyle = license.cancelAtPeriodEnd ? ' style="color: #ff6b6b;"' : '';
+                        detailsHtml += '<div class="license-detail-row"><span class="license-detail-label">' + subLabel + '</span><span class="license-detail-value"' + subStyle + '>' + new Date(license.subscriptionEndsAt).toLocaleDateString() + '</span></div>';
                     }
                 } else if (license.licenseType === 'trial') {
                     detailsHtml += '<div class="license-detail-row"><span class="license-detail-label">Type</span><span class="license-detail-value">Trial</span></div>';

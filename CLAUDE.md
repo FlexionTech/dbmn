@@ -79,6 +79,28 @@ The **extension repo** (`vs_active_8/CHANGELOG.md`) is the single source of trut
 - At release time, the extension changelog content is copied here with YAML front matter added
 - Both files must stay in sync
 
+## Video Assets
+Videos live in `assets/videos/`. Before embedding a video in any page or committing a new video file, check:
+
+1. **Size** — should be under 2MB. If larger, compress with:
+   ```bash
+   ffmpeg -i INPUT.mp4 -an -c:v libx264 -crf 28 -preset slow -r 15 -movflags +faststart OUTPUT.mp4
+   ```
+2. **Faststart** — the `moov` atom must be at the start of the file, not the end. Verify with:
+   ```bash
+   python3 -c "
+   import struct; f = open('FILE.mp4', 'rb'); pos = 0
+   for _ in range(5):
+       h = f.read(8)
+       if len(h) < 8: break
+       size = struct.unpack('>I', h[:4])[0]; name = h[4:8].decode('ascii', errors='replace')
+       print(f'offset={pos} atom={name} size={size}'); f.seek(pos + size); pos += size
+   "
+   ```
+   The `moov` atom should appear before `mdat`. If not, re-run the ffmpeg command above (`-movflags +faststart` fixes it).
+3. **No audio** — strip audio with `-an` for screen recordings (saves ~10-15% file size)
+4. **No junk files** — delete `Zone.Identifier` files and unused originals before committing
+
 ## Key Rules
 - This is the single source of truth for user-facing documentation
 - The private repo (vs_active_8) contains internal dev docs only

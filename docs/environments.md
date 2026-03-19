@@ -14,7 +14,7 @@ Environments represent different API targets — production, staging, developmen
 
 Each environment contains:
 - **Connection details** — Base URL and environment metadata
-- **Authentication** — JWT tokens, OAuth, or Google Service Account
+- **Authentication** — DBMN, JWT tokens, OAuth, or Google Service Account
 - **Target timezone** — Timezone for datetime operations
 - **Parallel processing** — Concurrency level for batch execution
 - **Variables** — Key-value pairs available in templates via `ENV:` prefix
@@ -175,7 +175,24 @@ Configure concurrency for batch execution — how many API requests Dobermann se
 ## Authentication
 {: #authentication }
 
-Dobermann supports three authentication methods:
+Dobermann supports four authentication methods:
+
+### DBMN
+
+Authenticate using your DBMN account. This is the simplest method — sign in once and your token is managed automatically.
+
+**How to use:**
+1. Select "DBMN" as the authentication method
+2. If you're already signed in to DBMN (status bar icon), authentication is immediate
+3. If not signed in, you'll be prompted to sign in when you execute an API
+
+**Token management:**
+- Tokens are acquired and refreshed automatically
+- No manual copy/paste needed
+- If your session expires, Dobermann prompts you to re-authenticate before execution
+
+{: .note }
+> **DBMN auth is required for [Puppy School](playground)** — the playground API authenticates using your DBMN session.
 
 ### Manual JWT Token
 
@@ -372,6 +389,7 @@ Environments appear in the sidebar tree view with these indicators:
 **Symptoms:** API requests return 401 Unauthorized
 
 **Solutions:**
+- **DBMN:** Click **Sign In** when prompted — your DBMN session will be refreshed automatically
 - **JWT:** Paste a new token in environment settings
 - **OAuth:** Click **Sign In (New Token)** to force fresh credentials and get an updated token
 - **Google Service Account:** Check key expiry, re-upload if needed

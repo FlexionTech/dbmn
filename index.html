@@ -91,19 +91,82 @@ nav_exclude: true
             color: #7ab8ff;
             margin-bottom: 1.5rem;
         }
-        .hero h2 {
+        .hero-rotating {
+            margin-bottom: 1rem;
+        }
+        .hero-static {
             font-family: var(--brand-font-heading);
             font-size: 3rem;
             line-height: 1.15;
-            margin-bottom: 1rem;
+            color: var(--brand-text);
         }
-        .hero .subtitle {
+        .hero-word-wrapper {
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+            height: 1.25em;
+            vertical-align: bottom;
+            font-size: 3rem;
+            line-height: 1.15;
+            margin-bottom: -0.1em;
+            text-align: left;
+            margin-left: 0.15em;
+        }
+        .hero-word-sizer {
+            display: block;
+            font-family: var(--brand-font-heading);
+            font-size: inherit;
+            line-height: 0;
+            height: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        .hero-word {
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            font-family: var(--brand-font-heading);
+            font-size: inherit;
+            line-height: inherit;
+            color: #7ab8ff;
+            transform: translateY(100%);
+            opacity: 0;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1),
+                        opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .hero-word.active {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        .hero-word.exit {
+            transform: translateY(-100%);
+            opacity: 0;
+        }
+        .hero-tagline {
             font-size: 1.25rem;
             color: var(--brand-text-muted);
             margin-bottom: 2rem;
             max-width: 600px;
             margin-left: auto;
             margin-right: auto;
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .hero-word {
+                transition: none;
+            }
+        }
+        .hero-video {
+            max-width: 900px;
+            margin: 0 auto 2rem;
+            padding: 0 2rem;
+        }
+        .hero-video video {
+            width: 100%;
+            border-radius: 12px;
+            border: 1px solid var(--brand-border);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
         }
         .buttons {
             display: flex;
@@ -378,7 +441,9 @@ nav_exclude: true
 
         /* ── Responsive ── */
         @media (max-width: 700px) {
-            .hero h2 { font-size: 2rem; }
+            .hero-static { font-size: 2rem; }
+            .hero-word-wrapper { font-size: 2.4rem; }
+            .hero-rotating { display: flex; flex-direction: column; align-items: center; gap: 0.25rem; }
             .proof-bar { grid-template-columns: repeat(2, 1fr); }
             .problem-grid { grid-template-columns: 1fr; }
             .steps { grid-template-columns: 1fr; }
@@ -408,8 +473,18 @@ nav_exclude: true
 
     <section class="hero">
         <span class="hero-badge">30-day free trial &mdash; no credit card required</span>
-        <h2>Migrate millions of records through any REST API</h2>
-        <p class="subtitle">Bulk data operations for REST APIs. No scripts. No ETL platforms. Just data in and out. Fast, reliable, done.</p>
+        <div class="hero-rotating">
+            <span class="hero-static">Dobermann is</span>
+            <div class="hero-word-wrapper">
+                <span class="hero-word-sizer" aria-hidden="true">Relentless</span>
+                <span class="hero-word active">Loyal</span>
+                <span class="hero-word">Unleashed</span>
+                <span class="hero-word">Relentless</span>
+                <span class="hero-word">Pedigreed</span>
+                <span class="hero-word">Fearless</span>
+            </div>
+        </div>
+        <p class="hero-tagline">Bulk data migration. Built for the field.</p>
         <div class="buttons">
             <a href="https://marketplace.visualstudio.com/items?itemName=dbmn.dobermann" class="cta">
                 Install for VS Code
@@ -418,6 +493,12 @@ nav_exclude: true
                 Getting Started &rarr;
             </a>
         </div>
+    </section>
+
+    <section class="hero-video">
+        <video autoplay muted playsinline controls preload="metadata">
+            <source src="/assets/videos/dbmn_import_100k_sm.mp4" type="video/mp4">
+        </video>
     </section>
 
     <div class="proof-bar">
@@ -583,5 +664,21 @@ nav_exclude: true
         &copy; 2026 DBMN.io. Migrate millions of records through any REST API.
     </footer>
 
+<script>
+    (function () {
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+        var words = document.querySelectorAll('.hero-word');
+        if (words.length < 2) return;
+        var current = 0;
+        setInterval(function () {
+            words[current].classList.remove('active');
+            words[current].classList.add('exit');
+            var prev = current;
+            current = (current + 1) % words.length;
+            words[current].classList.add('active');
+            setTimeout(function () { words[prev].classList.remove('exit'); }, 500);
+        }, 2800);
+    })();
+</script>
 </body>
 </html>

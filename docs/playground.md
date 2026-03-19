@@ -100,16 +100,12 @@ Click the DBMN icon in the VS Code status bar and sign in (or register for a fre
 3. Set the **Name** to: `DBMN Puppy School`
 4. Set the **Base URL** to: `https://api.dbmn.io/functions/v1/playground`
 
-### 3. Configure Authentication Header
+### 3. Set Authentication to DBMN
 
-1. In the environment, go to the **Headers & Variables** tab
-2. Add a header:
-   - **Key**: `Authorization`
-   - **Value**: `Bearer {% raw %}{{A8:DBMN_TOKEN}}{% endraw %}`
-3. The `{% raw %}{{A8:DBMN_TOKEN}}{% endraw %}` variable auto-resolves to your DBMN access token at execution time — no manual copy/paste needed. The token is refreshed automatically when it expires.
+1. In the environment's **Authentication** section, select **DBMN** from the dropdown
+2. That's it — Dobermann injects your DBMN token automatically at execution time
 
-{: .note }
-> `{% raw %}{{A8:DBMN_TOKEN}}{% endraw %}` is an A8 system variable. It only resolves when you are signed in to DBMN. If you sign out, the variable stays unresolved and API calls will return 401.
+No manual headers or token copy/paste required. If your session expires, Dobermann prompts you to re-authenticate before execution.
 
 ### 4. Create Endpoints
 
@@ -421,8 +417,8 @@ Check your current row count, limit, and remaining capacity.
 {
   "userId": "abc-123",
   "rowCount": 1250,
-  "rowLimit": 50000,
-  "rowsRemaining": 48750,
+  "rowLimit": 250000,
+  "rowsRemaining": 248750,
   "ttlHours": 48
 }
 ```
@@ -547,7 +543,7 @@ The playground handles concurrent requests well. When running batch uploads:
 
 | Limit | Value |
 |-------|-------|
-| **Rows per user** | 50,000 across all tables |
+| **Rows per user** | 250,000 across all tables |
 | **Max items per POST** | 1,000 |
 | **Max page size** | 500 |
 | **Data TTL** | 48 hours (your data auto-purges; seed data is permanent) |
@@ -565,7 +561,7 @@ The playground returns structured errors:
 {
   "error": "Row limit exceeded",
   "code": "ROW_LIMIT_EXCEEDED",
-  "details": { "current": 48500, "requested": 2000, "limit": 50000 }
+  "details": { "current": 248500, "requested": 2000, "limit": 250000 }
 }
 ```
 
@@ -577,7 +573,7 @@ The playground returns structured errors:
 | `BAD_REQUEST` | 400 | Invalid JSON body |
 | `FK_VIOLATION` | 400 | Invalid SCAC, GLN, or GTIN — not in reference tables |
 | `BULK_LIMIT_EXCEEDED` | 400 | More than 1,000 items in one POST |
-| `ROW_LIMIT_EXCEEDED` | 429 | Would exceed 50,000 row limit |
+| `ROW_LIMIT_EXCEEDED` | 429 | Would exceed 250,000 row limit |
 
 ---
 

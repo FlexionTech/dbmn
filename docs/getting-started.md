@@ -19,6 +19,29 @@ Get up and running in 5 steps:
 4. **Run a Batch** — Upload a file, paste data, or type values directly. Map columns, review your data, and execute
 5. **Watch it Go** — The Console opens automatically with results streaming in real-time. Sit back and watch your batch execute — don't grab a coffee, you'll miss the show.
 
+## First Launch: What to Expect
+
+When you sign in to an OAuth environment for the first time, your browser and VS Code will show a few standard security prompts. These are normal — here's what to expect.
+
+### "Open Visual Studio Code?" (Browser)
+
+After you authenticate with your OAuth provider, the browser redirects back to VS Code using a `vscode://` link. Your browser will ask permission to open it.
+
+- Click **Open** (or **Allow**)
+- Optionally check **Always allow** to skip this prompt in future
+
+### "Do you trust this domain?" (VS Code)
+
+VS Code asks you to confirm trust for the domain that triggered the redirect. You may see this for your OAuth provider's domain and for dbmn.io. This is a one-time prompt per domain.
+
+- Click **Open** to continue
+
+### "Untrusted publisher" badge (Marketplace)
+
+New extensions on the VS Code Marketplace show an "Unverified" badge until the publisher is verified by Microsoft. This is standard for all new extensions and will resolve once verified publisher status is granted.
+
+All three prompts are standard VS Code and browser security measures — not bugs or issues with Dobermann.
+
 ## Core Concepts
 
 ### Environments

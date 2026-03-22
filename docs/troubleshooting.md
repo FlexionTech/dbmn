@@ -11,6 +11,21 @@ This guide covers common issues, error messages, and solutions for Dobermann. Is
 
 ## Authentication Issues
 
+### First-Time Sign-In Prompts
+
+**Symptoms:**
+- Browser asks "Open Visual Studio Code?" after OAuth login
+- VS Code shows "Do you trust this domain?" dialog
+- Extension shows "Unverified" or "Untrusted publisher" badge
+
+**These are normal.** When you first sign in with OAuth, the browser-to-VS Code redirect triggers standard security prompts:
+
+1. **Browser prompt** — Click **Open** (or **Allow**) to let the browser hand back to VS Code. Check **Always allow** to skip next time.
+2. **Domain trust prompt** — VS Code asks you to trust the domain that triggered the redirect (your OAuth provider and/or dbmn.io). Click **Open**. One-time per domain.
+3. **Unverified publisher** — New Marketplace extensions show this badge until Microsoft grants verified status. Does not affect functionality.
+
+See [Getting Started — First Launch](getting-started#first-launch-what-to-expect) for more detail.
+
 ### Token Expired
 
 **Symptoms:**
